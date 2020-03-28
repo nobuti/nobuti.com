@@ -1,0 +1,17 @@
+{
+  "name": "@nobuti/dotcom",
+  "author": "Buti",
+  "description": "Buti's personal website",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "start": "gatsby develop",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "gatsby": "^2.20.8",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
