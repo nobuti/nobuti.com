@@ -134,5 +134,18 @@ export default {
       color: "primary",
       textDecoration: "none",
     },
+    navlink: {
+      color: "inherit",
+      textDecoration: "none",
+      ":hover,:focus": {
+        color: "primary",
+      },
+    },
+    navitem: {
+      variant: "styles.navlink",
+      display: "inline-flex",
+      alignItems: "center",
+      fontWeight: "bold",
+    },
   },
 };

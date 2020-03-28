@@ -10,10 +10,14 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.28",
     "gatsby": "^2.20.8",
     "gatsby-plugin-theme-ui": "^0.3.0",
+    "lodash.get": "^4.4.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^5.2.1",
+    "react-icons": "^3.9.0",
     "theme-ui": "^0.3.1"
   },
   "devDependencies": {
