@@ -1,4 +1,9 @@
 module.exports = {
+  siteMetadata: {
+    title: "nobuti.com",
+    description: "Buti's personal site",
+    siteUrl: "https://nobuti.com",
+  },
   plugins: [
     "gatsby-plugin-theme-ui",
     {
@@ -13,10 +18,6 @@ module.exports = {
         name: "posts",
         path: "src/posts",
       },
-    },
-    {
-      resolve: "gatsby-plugin-feed",
-      options: require("./feed"),
     },
   ],
 };

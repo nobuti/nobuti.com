@@ -75,7 +75,7 @@ export const Tiles = (props) => (
         m: "auto",
       },
       a: {
-        variant: "styles.navlink",
+        variant: "styles.emphasis",
       },
       ...props.sx,
     }}
@@ -96,7 +96,6 @@ export const List = (props) => (
         gridGap: 4,
       },
       a: {
-        variant: "styles.navlink",
         fontWeight: "bold",
       },
       ...props.sx,

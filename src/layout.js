@@ -47,13 +47,13 @@ export default (props) => {
         </Styled.a>
         <Styled.a
           as={Link}
-          to="/blog"
+          to="/notes"
           sx={{
             variant: "styles.navitem",
             mr: 3,
           }}
         >
-          Blog
+          Notes
         </Styled.a>
         <Styled.a
           as={Link}
@@ -133,13 +133,13 @@ export default (props) => {
           </Styled.a>
           <Styled.a
             as={Link}
-            to="/blog"
+            to="/notes"
             sx={{
               variant: "styles.navitem",
               mr: 3,
             }}
           >
-            Blog
+            Notes
           </Styled.a>
           <Styled.a
             as={Link}
