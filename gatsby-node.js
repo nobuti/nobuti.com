@@ -80,7 +80,7 @@ exports.onCreateNode = ({
   if (parent.sourceInstanceName !== "posts") return;
 
   const slug =
-    "/notes" +
+    "/thoughts" +
     createFilePath({
       node,
       getNode,
@@ -180,12 +180,12 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     let previous = "";
     let next = "";
     if (i > 0) {
-      previous = pi === 1 ? "/notes" : join("/notes", pi);
+      previous = pi === 1 ? "/thoughts" : join("/thoughts", pi);
     }
     if (ni < pages) {
-      next = join("/notes", ni);
+      next = join("/thoughts", ni);
     }
-    const slug = i === 0 ? "/notes" : join("/notes", i + 1);
+    const slug = i === 0 ? "/thoughts" : join("/thoughts", i + 1);
 
     actions.createPage({
       path: slug,
