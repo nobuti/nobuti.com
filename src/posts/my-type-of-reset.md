@@ -1,0 +1,153 @@
+---
+title: My type of reset
+date: 2019-10-21
+---
+First of all, is css reset still needed in 2019? I actually think it never has been necessary.
+But a CSS reset will help you to make your project maintain the look and feel between every
+browser and might save you a lot of time of browser-testing and debugging.
+
+Along these years, a lot of options have emerged for reseting styles, being [reset.css][] or
+[normalize.css][] the most popular. I love minimal CSS reset especially now that browsers are
+getting more consistent with behavior. So I'm using my own reset file, customized to my needs.
+In this article, I want to share these preferences with you.
+
+### Box sizing
+
+I set `box-sizing` on the html and let elements inherit the property value. By this way you can set a default `box-sizing` but still able change the behaviour when you need it.
+
+```
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after { 
+  box-sizing: inherit;
+}
+```
+
+### Lists
+
+I use unordered lists in many situations, and I don’t need a `disc` style in most of them. Here, I set `list-style` to none. Also, related to the next section, I remove the default `padding`.
+
+```
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+```
+
+### Spacing
+
+Browsers set different spacings for different elements but I'd rather to manage margins by my own.
+
+```
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+```
+
+### Images and videos
+
+I let these elements conform to the width of their containers. Also setting these elements to `display: block` gets rid of an unwanted whitespace at the bottom of the element.
+
+```
+img,
+video {
+  height: auto;
+  max-width: 100%;
+  display: block;
+}
+```
+
+### Form inputs
+
+Somehting that always bugged me of form elements is that they don't inherit the container's font. So
+no more.
+
+```
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+```
+
+### Iframe
+
+I tried to avoid `iframe` as much as I can, so removing the border when I can't is nice.
+
+```
+iframe {
+  border: 0;
+}
+```
+
+### Tables
+
+Working with tabulated data is likely to happen in any project these days. Setting the baseline and
+keep it simple is the goal. 
+
+```
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+td:not([align]),
+th:not([align]) {
+  text-align: left;
+}
+```
+
+### Body
+
+I'm being totally opinated here. It’s useful for the `body` to fill the viewport, even when empty, so I do
+that by setting the `min-height` to `100vh`. I also like smooth anchor scrolling, so I set
+`scroll-behavior: smooth`, too. This is really handy combined with `scrollIntoViewport`. To improve
+the font performance, `text-rendering: optimizeSpeed` instead of `optimizeLegibility`, and increse
+the text legibility (and accesibility) augmenting the `line-height`.
+
+```
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.4;
+}
+```
+
+### Styled components
+
+To be honest, I was skeptical, I like CSS! But once I tried, I felt in love. In essence, styled components are easy-to-make react components you write with the [styled-components][] library where you can style your components with plain CSS inside your javascript code. For my use case, working mostly on React projects.
+
+That’s it, a very tiny reset for styled-components that makes my life easier. If you like it, go to grab it from [GitHub][styled-reset] or [NPM][styled-reset-npm].
+
+
+[reset.css]: https://meyerweb.com/eric/tools/css/reset/
+[normalize.css]: https://necolas.github.io/normalize.css/
+[styled-components]: http://styled-components.com/
+[styled-reset]: https://github.com/nobuti/styled-reset
+[styled-reset-npm]: https://www.npmjs.com/package/@nobuti/styled-reset

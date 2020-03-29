@@ -1,0 +1,39 @@
+---
+title: Mi impostor
+date: 2019-10-18
+language: es
+---
+> Este post en realidad es la transcripción de una charla interna que di a mi equipo @7r, donde cuento
+> lo que sé acerca del síndrome del impostor, cómo me afecta y qué hago para vivir con él.
+
+Vivimos tiempos complejos, donde el nivel de exigencia es altísimo. Lo que llamamos social media, nos bombardea a diario, a todas horas, con contenido acerca de lo que podríamos ser y como conseguirlo. Tienes que ser auténtico, tienes que ser el mejor, tienes que conseguir más. Tenemos listas de los mejores 30 por debajo de los 30, los mejores 20 por debajo de los 20... 
+Imposible mantener el ritmo.
+
+Dejadme deciros una cosa: la mayoría de los días, me siento como si fuera un fraude, muchas veces no sé ni lo que hago, pienso que en algún momento se me verá el cartón y todos os daréis cuenta. Y no soy el único, cerca del 80% de trabajadores en activo se ha sentido así alguna vez. 80%. No es algo que esté limitado a hombres o mujeres, blancos o negros, programadores o vendemotos. Esta sensación de no merecer la posición en la que estás, se conoce como _síndrome del impostor_.
+
+Tampoco es exclusiva del mundo laboral, puede atacaros en vuestra vida personal. Recuerdo una vez en una fiesta, una chica guapísima me confundió con otra persona. Ella estaba totalmente fuera de mi liga, pero me pareció tan atractiva y yo estaba tan ávido de apuntarme un tanto, que utilicé un _fake it until you make it_ de libro. En este caso, no es que sufriera el síndrome del impostor, yo era un impostor. Hoy resulta que sigo casado con esa chica y todavía me despierto por las mañanas esperando que me pregunte _¿Quien eres y quien te ha dado ese lado de la cama? Fuera de aquí hombreya!_.
+
+En 1985, la doctora Pauline Clance publicó un estudio llamado "The Imposter Phenomeno"n. En este estudio detallaba como personas con un alto rendimiento, a las que cualquiera se querría parecer, pensaban que su éxito se debía a la suerte, no a sus capacidades y experiencia. Esto desembocaba en situaciones de estrés y otros hábitos tóxicos, que en algunos casos finalizaban en depresión o lo que conocemos como _burn out_.
+
+Probablemente nada de esto es nuevo para vosotros y si buscáis un poco por internet, daréis con miles de artículos donde te explican las 7 reglas (7r) que tienes que seguir para sobrellevarlo, para que no te afecte. Pero os voy a explicar por qué pienso que no es bueno dejar de lado tu síndrome del impostor.
+
+1. Tener síndrome del impostor significa que lo que haces te supone un desafío. Si quieres crecer en tu desarrollo personal o profesional, te tienes que adentrar en territorios inexplorados. Y cuando las cosas son nuevas, ya no nos sentimos tan cómodos como con las cosas que llevamos 15 años haciendo. Es lo que llamamos _salir de la zona de confort_ ¿verdad? Por lo tanto, piensa que no estás creciendo si no sales de tu zona de confort, si tu impostor interior no te dice _te la vas a pegar_. Obviamente no basta, pero sí que supone un estímulo.
+
+2. El síndrome del impostor mantiene tu ego controlado. Cuando tu ego tiene el tamaño de Kansas, tiendes a sentirte cómodo y despreocupado, y es en estas situaciones donde normalmente te pegas la ostia gorda. En este sentido, tu impostor te mantiene humilde, te ayuda a mantener el foco y los pies en el suelo, te marca los límites de tu conocimiento y capacidades, y por lo tanto, sabes como aumentarlos. Las personas con más éxito que conozco, no se cuestionan a ellos mismos, cuestionan su conocimiento.
+
+3. El último punto y el más importante, es que el síndrome del impostor te empuja a actuar. Tu impostor te lleva a dudar de ti mismo de una forma tóxica, y vive en tu cabeza. Esas ídeas las tenemos todos, y en mi caso es una batalla perdida, siempre aparece. Pero una vez lo interiorizas y te pones manos a la obra, esas dudas desaparecen, no hay sitio en para esas ideas, solo para mejorar lo que tienes entre manos.
+
+Y os preguntaréis, ¿entonces me estás diciendo que tener el síndrome del impostor es la ostia? Evidentemente no, tienes que tener la suficiente madurez mental para que te afecte lo menos posible. A lo largo de mi vida, estás son algunas de las cosas que mejor me han funcionado a mí:
+
+1. Deal with it: Superar el impostor esun viaje que dura toda la vida, al principio me costó, pero con el tiempo, me hice a la idea de que siempre estará ahí y aprendí a apreciar las cosas buenas que me aportan.
+
+2. Círculo de confianza: Tengo personas increíbles en mi vida, que me alientan constantemente y me prestan su apoyo. Son mi roca a la que agarrarme cuando mi impostor se vuelve más fuerte. 
+
+3. Celebra las victorias: Es curioso cómo a veces creemos más en nuestros compañeros y amigos cuando nos critican, pero cuando elogian nuestro trabajo o nuestros logros, lo minimizamos y pensamos que lo están diciendo porque les gustamos, no porque nos lo merecemos. Creetelo y celebra cada victoria.
+
+4. Comparte: ¿Conocéis la técnica de Feynman para aprender nuevos conocimientos? Pues la idea básica es esa. Aprende algo para compartirlo explicándolo de forma sencilla para que cualquiera lo entienda. Lo puedes compartir en meetups, en tu día a día con tus compañeros, mentorizando a otras personas, o si eres un triste como yo, delante de un espejo. Aprender es salir de tu zona de confort, y en definitiva, cerrarle la boca a tu impostor.
+
+Para cerrar esta charla, una ídea. No sé en vuestro caso, pero cuando más me he sentido un fraude es cuando he trabajado con grandes humanos a mi lado, personas que me enseñan a diario, de las que aprendo, pero también a las que transmito conocimiento. De hecho, esta charla es un ejemplo de libro del síndrome del impostor. Estoy aquí enfrente de un grupo de personas genial, hablando de algo como si fuera un pseudo experto, hablando de un sentimiento al que hace unos años no sabía ni ponerle nombre.
+
+Pero ¿no consiste en eso? Muchas gracias! 
+
