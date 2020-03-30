@@ -1,0 +1,170 @@
+---
+title: Mocking modules in Jest
+date: 2020-03-30
+language: en
+---
+
+Our unit tests should never rely on code that is outside our control and they certainly shouldn't be calling across the network to a server. A good test needs to be repeatable and fast and relying on outside systems and/or data doesn't help us meet those goals. In this lesson, we'll use mocks to create an environment where we control the response for service calls. This will allow us to be confident in our assertions and ensure our tests aren't flaky. Let's see an example of mocking a module to manage the API response.
+
+I'm going to use [pokeapi][], an open and simple API that it's ideal for this kind of example. I used [create-react-app][] to set up the environment. Also, to manage the API requests I'm going to use [unfetch][], only because I'm a huge fan of [Jason Miller][]:
+
+```
+npx create-react-app til-jest-mock
+yarn add unfetch
+```
+
+First thing first, I need to create a new module `api/index.js`. This module will include all the methods to interact with our external source of data, this is, [pokeapi][]. Using `unfetch` our module will include the next code:
+
+```
+import fetch from "unfetch";
+
+function checkStatus(response) {
+  if (response.ok) {
+    return response;
+  } else {
+    const error = new Error("Fetch error");
+    error.response = response;
+    error.status = response.status;
+    return Promise.reject(error);
+  }
+}
+
+export const getPokemons = async () => {
+  const request = await fetch("https://pokeapi.co/api/v2/pokemon");
+  const response = await checkStatus(request);
+  return response.json();
+};
+```
+
+I've made a `getPokemons` function to fetch the list of pokemons. The Promise returned from `fetch` won't reject HTTP error status even if the response is an HTTP 404 or 500. Instead, it will resolve normally, and it will only reject on network failure or if anything prevented the request from completing. To have fetch Promise reject on HTTP error statuses, i.e. on any non-2xx status, define a custom response handler.
+
+Next, I'm going to create a component to consume the api to render a list of pokemons. My `App.js` file looks like this:
+
+```
+import React, { useEffect, useState } from "react";
+import { getPokemons } from "./api";
+
+export default function App() {
+  const [pokemons, setPokemons] = useState([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const { results } = await getPokemons();
+        setPokemons(results);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    fetch();
+  }, []);
+
+  return (
+    <ul className="App">
+      {pokemons.map(pokemon => (
+        <li key={pokemon.name}>{pokemon.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+Nothing special here, I create a `pokemons` state initialized to an empty array, I make an API request as soon the component is mounted. Once the request is resolved, I update the state and a rerender is launched, updating the component.
+
+Let's start with our tests and create our test file:
+
+```
+import React from "react";
+import { render } from "@testing-library/react";
+
+import App from "./App";
+
+describe("App", () => {
+  it("render properly", async () => {
+    const { debug } = render(<App />);
+    debug();
+  });
+});
+```
+
+This renders the pokemons list from the API using the `render` method from `@testing-library/react`. Then I destructure the results of this to get is a debug function. For now, I'm just going to call debug right here. If I execute `yarn test` from the terminal, the test passes obviously, because I don't have any assertions. But if we examine the `debug` output we can see there is no pokemon:
+
+```
+<body>
+  <div>
+    <ul
+      class="App"
+    />
+  </div>
+</body>
+```
+
+That's because this test is running before that async call can return. The other problem with this test is that it's going to try to make the API call and we don't want to do that. We don't want to rely on an external server. Let's see if we can clear all this up by mocking out our API module and providing a known result to our component when it makes that fetch call. So let's introduce out mock:
+
+```
+import React from "react";
+import { render, act } from "@testing-library/react";
+
+import App from "./App";
+import { getPokemons } from "./api";
+
+jest.mock("./api");
+
+describe("App", () => {
+  it("render properly", async () => {
+    getPokemons.mockResolvedValue({
+      results: [{ name: "Wadus" }, { name: "Frodo" }],
+    });
+
+    let debug, getByText;
+
+    await act(async () => {
+      ({ debug, getByText } = render(<App />));
+    });
+    
+    debug();
+    expect(getByText("Wadus")).toBeDefined();
+  });
+});
+```
+
+The first thing I did was to mock our API module:
+
+```
+jest.mock("./api");
+```
+
+When this runs, Jest is going to hoist this mock call up to the top of our file. When this import runs, at run time, `getPokemons` is going to come back as a Jest mock function. That's how this is going to work. To handle the `getPokemons` response, I imported it as well, and using `mockResolvedValue` I set the custom response:
+
+```
+getPokemons.mockResolvedValue({
+  results: [{ name: "Wadus" }, { name: "Frodo" }],
+});
+```
+
+Let's recall the previous output of the `debug` method, when we weren't able to see any pokemon because of the async nature of our component. To fix this I moved the render into a call to `act`. From the [act documentation][]:
+
+> When writing UI tests, tasks like rendering, user events, or data fetching can be considered as “units” of interaction with a user interface. React provides a helper called act() that makes sure all updates related to these “units” have been processed and applied to the DOM before you make any assertions
+
+That's precisely what we need, so making `act` async we assure that all updates have been managed before making any assertion. In order to get a reference to the `debug` function or any of the other queries that are returned from render, we need to define them outside of this async function. To destructure into an existing identifier we just need to surround this entire call in parentheses:
+
+```
+let debug, getByText;
+
+await act(async () => {
+  ({ debug, getByText } = render(<App />));
+});
+```
+
+Now `debug` is showing us that the newly rendered output is giving us exactly what we expect using our mock data for `getPokemons`. I introduced an assertion as well, using the `getByText` method returned by the `render`. In this case, we looked for a pokemon grabbed from out mocked data. Now the test passes and it's passing with assertions in it, so we know everything is good.
+
+The complete code is ready in this [repo][].
+
+[pokeapi]: https://pokeapi.co/
+[create-react-app]: https://create-react-app.dev/
+[unfetch]: https://github.com/developit/unfetch
+[caveats]: https://github.com/developit/unfetch#caveats
+[Jason Miller]: https://github.com/developit
+[act documentation]: https://reactjs.org/docs/testing-recipes.html#act
+[repo]: https://github.com/nobuti/til-jest-mock
