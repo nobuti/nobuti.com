@@ -19,5 +19,6 @@ module.exports = {
         path: "src/posts",
       },
     },
+    "gatsby-plugin-react-helmet",
   ],
 };

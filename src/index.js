@@ -6,7 +6,7 @@ import Layout from "./layout";
 const Page = (props) => {
   let title = "Nobuti";
   const postTitle = get(props.data, "post.title");
-  const description = get(props.data, "post.excerpt");
+  const description = get(props.data, "post.excerpt") || "The thoughts of Buti";
 
   if (postTitle) {
     title = `${postTitle} | ${title}`;
