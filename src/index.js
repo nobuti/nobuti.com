@@ -14,7 +14,12 @@ const Page = (props) => {
 
   return (
     <>
-      <Helmet>
+      <Helmet
+        htmlAttributes={{
+          lang: "en-us",
+        }}
+      >
+        >
         <link
           rel="apple-touch-icon"
           sizes="180x180"
