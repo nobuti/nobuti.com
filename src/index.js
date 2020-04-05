@@ -6,7 +6,7 @@ import Layout from "./layout";
 const Page = (props) => {
   let title = "Nobuti";
   const postTitle = get(props.data, "post.title");
-  const description = get(props.data, "post.excerpt") || "The thoughts of Buti";
+  const description = get(props.data, "post.excerpt") || "Wadus of Buti";
 
   if (postTitle) {
     title = `${postTitle} | ${title}`;
@@ -47,6 +47,7 @@ const Page = (props) => {
         <meta name="twitter:description" content={description} />
         <meta name="twitter:creator" content="Buti" />
         <meta name="twitter:card" content="summary" />
+        <meta name="Description" content={description}></meta>
       </Helmet>
       <Layout {...props}>{props.children}</Layout>
     </>
