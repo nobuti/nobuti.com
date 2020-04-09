@@ -67,7 +67,7 @@ export default useToast
 
 As you see, `toasts` is just an array of objects, where each object contains the information to render the toast component. In the `addToast` I augment the data object with a custom `toast` property to store the unique id. Then this new augmented object is inserted in the `toasts` collection. The `removeToast` function just filters the toasts returning every toast whose `toast` id that doesn't match with the id passed as an argument.
 
-Sweet. I need to share that functionality across my application. We can do it with `redux`, `mobx` or similar, but I instead opted for the [Context API][]. So in `src/componentes/toastComponent.js` I'm going to create the context and the provider:
+Sweet. I need to share that functionality across my application. We can do it with `redux`, `mobx` or similar, but I instead opted for the [Context API][]. So in `src/componentes/toastContext.js` I'm going to create the context and the provider:
 
 ```
 import React, { createContext, useContext } from 'react'
