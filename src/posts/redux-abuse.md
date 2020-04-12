@@ -1,0 +1,45 @@
+---
+title: Redux abuse
+date: 2020-04-12
+language: en
+---
+
+> Disclaimer: This that you are going to read is an opinionated approach that works for me, based on my experience. There are a ton of other ways to make things and I'm sure they are valid too. 
+
+State management in complex React applications was a hard task before [redux][] came up. Redux is a small library designed to manage the state of data in JavaScript applications, ensuring every piece of your application can access to the state without having send `props` to children. Redux is all about state, it gives you superpowers, but you know, every power brings responsibility. 
+
+Redux is great, it is, but that doesn't mean you have to use it in all your projects. So, when do you need to use Redux? My common sense says that you should avoid it until state management becomes a pain. So, seeing it from the other side, you should not use Redux if:
+
+- You are comfortable with the way you manage the state in your app.
+- You are learning or getting experience with React. Redux is not part of the React's core, in fact, it is library agnostic and so it can be used in vanilla JavaScript, React or any other UI library.
+- Your app is simple enough built on top of mostly simple actions to change the UI. This kind of state can be handled at component level, they don’t have to be a part of the Redux store.
+- Your components don't share data.
+
+On the other hand, there is a controversial matter in Redux: [Do I have to put all my state into Redux?][] You can do that, and I've seen people insist that you must do that but I strongly disagree. There is nothing bad about doing that, it's a valid choice. However, class components, functional components, Redux state, and local component state are all tools with different use cases and tradeoffs, and you should use them all as appropriate for the specific problems you're trying to solve. Redux is primarily intended for anything related to your application logic. Putting everything in Redux it often ends up being burdensome and verbose, and adds an annoying level of complexity. In the end, mounting any state to Redux store requires more boilerplate. And to try to solve this complexity, we tend to add more libraries or patterns, that in fact, they add more constraints and boilerplates...
+
+I try to simply ask these questions when I'm in doubt: Is this state significant to the rest of components of my application? Will this affect other components' behavior? In not a few cases, the answer will be *no*. So, wiring it up to your store is probably not needed, and it won't provide you any benefits. In this scenario, it's better off using `useState` or `useReducer`. But, again, it's certainly a valid option. 
+
+But even you choose to store everything in the redux store, it is also not possible or performant to make all state controlled. Sometimes we use existing libraries for which it is hard to build a declarative interface. Some state is also hard to mount to redux store efficiently, including:
+
+- Form inputs
+- Scroll position
+- Viewport size
+- Animations
+- Mouse position
+- Caret position / selection
+- Canvas data
+- ...
+
+From a performance point of view, putting everything in the store is not a good idea. The cost of actually dispatching a Redux action is:
+
+- Passing the action through each middleware
+- Executing the root reducer function
+- Calling all of the store subscription callbacks
+
+Generally, the middleware and the reducer logic are not the bottlenecks, it's updating the UI that can be expensive. But all subscriber callbacks are run every time an action reaches the main store and the reducer runs, even if no state is updated as a result. Subscribers do not subscribe to specific actions, they are notified whenever any action was dispatched. Now, `connect` attempts to optimize behavior by checking to see if the root state value has changed at all, and bailing out immediately if it's the same, but that's still a function call and a comparison. 
+
+In summary, it’s true that *Redux is a great library* for managing the state of your application, but it's not a silver bullet or even the single bullet in your arsenal. Redux is a tool, use it wisely. Your job as a frontend engineer is to know your tools and decide when and how to use them.
+
+
+[redux]: https://redux.js.org/
+[Do I have to put all my state into Redux?]: https://redux.js.org/faq/organizing-state#organizing-state
