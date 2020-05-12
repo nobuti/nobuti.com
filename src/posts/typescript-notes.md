@@ -38,5 +38,99 @@ For more information on the types in JavaScript, see this [MDN doc](https://deve
 
 JavaScript is loosely typed, you don’t have to specify types of variables. Another caracteristic of loosy typed languajes is that there is nothing to prevent a variable from changing its type.
 
+## Using type annotations
+
+TypeScript’s type annotations allow us to assign types to variables. The syntax for a type annotation is as follows: put a colon followed by the variable name and type before any assignment. 
+
+```
+let wadus: string
+```
+
+We can add type annotations to function parameters and to its return value:
+
+```
+const add = (x: number, y: number): number => {
+  return x + y
+}
+```
+
+We can define that a parameter is optional by putting a question mark (?) before the colon. It is important to note that optional parameters can only be at the end of the parameter list.
+
+```
+const greeting = (name: string, country?: string): string => {
+  const hello = `Hello ${name}`
+  const lovelyCountry = country ? `, ${country} is lovely!` : ''
+
+  return `${hello}${country}`
+}
+```
+
+## Type inference
+
+Adding type annotations to our code means we need to write extra code which consumes our time and bloats our code. TypeScript has something called type inference which means, in many cases, it can work out a variable's type without it having a type annotation. 
+
+TypeScript will automatically infer the type for a variable if a type annotation hasn’t been specified from the value it is assigned.
+
+```
+let wadus = 5 //=> number
+let foo = 'foo' //=> string
+let today = new Date() //=> Date
+```
+
+On the other side, when we are dealing with constants, the thing is a bit different. When a constant is initialized from a primitive type, TypeScript infers it to be a literal type of the specific value assigned. However, when a constant is initialized from a non-primitive type, TypeScript only infers it to be of the same type as assigned.
+
+```
+const wadus = 5 //=> 5
+const foo = 'foo' //=> foo
+const today = new Date() //=> Date
+```
+
+Type inference happens on functions as well, TypeScript does infer the return type of a function. 
+
+```
+function add(a: number, b: number) {
+  return a + b;
+}
+
+const ten = add(5, 5); //=> number
+```
+
+More information on type inference can be found [here in the TypeScript handbook](https://www.typescriptlang.org/docs/handbook/type-inference.html).
+
+
+## The `any` type
+
+The `any` type is a way of opting out of the type checking process. When it isn’t possible to create a TypeScript type to represent an item, we can use the any type. Historically, when TypeScript’s type system wasn’t as powerful, this would be the case. However, this case rarely happens today.
+
+## The `void` type
+
+The `void` type is to define that a function doesn’t return anything. Do use the return type void for callbacks whose value will be ignored.
+
+```
+function fn(x: () => void) {
+  x();
+}
+```
+
+Using `void` prevents you from accidentally using the return value of x in an unchecked way:
+
+```
+function fn(x: () => void) {
+  var k = x(); // oops! meant to do something else
+  k.doSomething(); // error, but would be OK if the return type had been 'any'
+}
+```
+
+## The `never` type
+
+The `never` type is used to represent a type of value that will never occur.
+
+```
+const keepLogging = (message: string) => {
+  while (true) {
+    console.log(message);
+  }
+}
+```
 
 
