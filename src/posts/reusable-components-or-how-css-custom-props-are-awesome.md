@@ -1,0 +1,96 @@
+---
+title: Reusable components or how awesome are the CSS custom properties
+date: 2020-05-13
+language: en
+---
+
+I’ve been reading a lot about _design tokens_ lately, and I think they’re super interesting. Design tokens are tiny pieces of UI information to store design related information such as colors, fonts, spaces, animations, etc...
+
+For someone who has been involved with CSS for a long time, that sounds very similar to concepts like variables, particles, atoms, style dictionary, BEM, OOCSS... In my head, all is reduced to the idea of being able to create UI pieces that behaved more like Lego blocks, optimizing the frontend development, making it _consistent_, _maintainable_, and _scalable_. 
+
+Those concepts are cool, but to be honest, we use them to hide the fact we, as programmers, are fucking lazy. Whenever we code the same thing twice in a row, we apply the DRY concept to abstract and "automate" the process, to reuse it. So in terms of UI, the goal is to build reusable components, writing a component once, then copy-pasting everywhere.
+
+So, how do I build components? Typically our beloved designers sorted common elements from our UI, with their various states. Then we the frontends build them in a component library that could be imported to any of our applications. The theory behind building components isolated is to keep them stable and versioned. But the reality is a bit different.
+
+Let's take a button as an example. Buttons have a default, hover, active, and disabled states. And usually, they have variants, they can be large, small, negative... you name it.
+
+```
+.Button {
+  border: 1px solid #e74c3c;
+  border-radius: 3px;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 0.85em;
+  padding: 1em 2em;
+}
+
+.Button.is-large {
+  font-size: 1em;
+  padding: 1.2em 2.5em;
+}
+
+.Button.is-small {
+  font-size: 0.75em;
+  padding: 0.75em 1.5em;
+}
+
+.Button.is-negative {
+  color: #e74c3c;
+  background-color: transparent;
+}
+```
+
+Easy peasy, all seems consistent and the design translates well into the browser. So designers are happy, we are happy, life is wonderful. But suddenly, we need to introduce a new section, a pricing section, with a call to action form where the button is rounded and with a different background and color. No problem, let's create a namespace CSS class and customize our button inside:
+
+```
+.Pricing .Button {
+  color: #444;
+  background-color: #fabada;
+  border-radius: 50px;
+}
+```
+
+But hey, that call to action button needs to be in the hero too, but with a subtly different style, to make the text more readable. No problem, let's add another variant. Then we need to develop a new cool feature involving tags. Tags are essentially buttons. So, you are right, we add more variants. 
+
+So while we add features to our project, the use of variants increases, and for variants I mean CSS classes. It's very easy to add more, but we rarely clean those unused classes because what if we need them in the future... Very quickly a simple button becomes a long list of classes, and in the end, our CSS often becomes a nightmare to maintain. 
+
+It seems our button is not as much reusable as we thought. How can we make it reusable then? How cool it would be if we can copy-paste the button and it just works? No variants, no classes.
+
+That's is what this talk is about https://www.youtube.com/watch?v=XR6eM_5pAb0. 
+
+After watching the talk, some ideas came to my mind to ensure the reusability of our components:
+    - an element should expose a kind of an API to customize its behavior based on the context.
+    - an element shouldn’t set its width, margin, height, and color. These attributes should be set by their parent.
+    - CSS custom properties are very cool and are an essential part of this approach.
+
+Based on these principles, let's try to build our truly reusable button. First, define our API, based on the variations, we will likely need attributes for font size, border and background color, and spacing. For each of these attributes, we will introduce a CSS variable. The cool thing is that CSS variables admit a default value, and this allows define the default behavior of our button:
+
+```
+.ReusableButton {
+  border: 1px solid var(--button-border, #e74c3c);
+  border-radius: var(--button-radius, 3px);
+  background-color: var(--button-background, #e74c3c);
+  color: var(--button-color, #fff);
+  font-size: var(--button-font-size, 0.85em);
+  padding: var(--button-space-y, 1em) var(--button-space-x, 2em);
+}
+```
+
+From here, we can get our small and large variant like this:
+
+```
+<button class="ReusableButton" style="--button-font-size: 1em; --button-space-y: 1.2em; --button-space-x: 2.5em;">Large</button>
+<button class="ReusableButton" style="--button-font-size: 0.75em; --button-space-y: 0.75em; --button-space-x: 1.5em;">Small</button>
+```
+
+or our negative flavor:
+
+```
+<button class="ReusableButton" style="--button-color: #e74c3c; --button-background: transparent;">Wadus</button>
+```
+
+Here https://codepen.io/nobuti/pen/RwWBoEb you can view and compare both results. For sake of simplicity, I'm passing parameters through inline style, because why not. And the great thing of this approach is that it's not limited to traditional CSS, you can apply it to React and styled-components if that's your weapon of choice. Of course, this idea introduces another set of problems, organizational problems mostly, like where to put the limit of customization, how many custom properties are too much... 
+
+But I think this is definitely a step forward in the right direction. I hope you like it as much as I do!
+
+This bunch of words has been written while I was listening https://soundcloud.com/rachel-gillett-23/sets/focused-work
