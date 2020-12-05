@@ -1,0 +1,102 @@
+---
+title: Polling
+date: 2020-12-01
+language: en
+---
+
+Polling, in computer science, refers to actively sampling the status of an external source of data. For instance, it's a common technique when you upload a file to the server and you want to measure the progression. It's useful also when you want to check if some external library has been loaded and it's ready to use.
+
+I know this kind of library implements a sort of callback to notify when they are ready to use. For instance, this is the way to go when you work with google map library:
+
+```
+<script async src="https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places&callback=mapsLibraryLoaded"></script>
+```
+
+In this case, when the google maps SDK is loaded, the function `mapsLibraryLoaded` is called. But this pattern doesn't fit on 100% of scenarios.
+
+Imagine a signup form where we have a React component that renders an input field that uses Google Places API to enrich the users' input, autocompleting the address while they write. The relevant part of the component is:
+
+```
+const bindGooglePlaces = (input) => {
+  const autoComplete = new window.google.maps.places.Autocomplete(input, {
+    types: ['address'],
+    componentRestrictions: { country }
+  });
+
+  autoComplete.setFields(['address_components', 'formatted_address']);
+  autoComplete.addListener('place_changed', onPlaceChanged);
+};
+
+useEffect(() => {
+  const googleIsLoaded = window.google != null && window.google.maps != null;
+  
+  if (googleIsLoaded) {
+    bindGooglePlaces(inputFieldRef.current);
+  }
+}, []);
+```
+
+When the input field is mounted, the autocomplete functionality is injected, if it's available. This code has a problem though. It's evident that if the library is not still there, the input won't get enriched, and the UX won't be nice. In this case, the callback doesn't help too much because we would declare the function at the root level:
+
+```
+window.mapsLibraryLoaded = () => {}
+```
+
+If not, Google Map library will raise an error trying to call a function that doesn't exist. Now, we can use the context API to set the loading state somehow when the callback is called, this way our component can be aware of the status changes. 
+
+But it seems a bit over-complicated. Instead of just to seat waiting to be notified (callback) why not take the opposite approach? This is where polling enters in the scene. We ask for the library presence, if it's not loaded yet, we ask for again past some milliseconds. More or less like when you travel with kids and they ask every minute if we have arrived yet.
+
+To handle the polling operation, we can use this helper:
+
+```
+const polling = async ({ fn, validate, interval, timeout = 0 }) => {
+  let calls = 0;
+  const maxCalls = timeout > 0 ? Math.ceil(timeout / interval) : 0;
+
+  const run = async (resolve, reject) => {
+    const result = await fn();
+    calls += 1;
+
+    if (validate(result)) {
+      return resolve(result);
+    }
+
+    if (maxCalls > 0 && calls === maxCalls) {
+      return reject(new Error("Polling timeout"));
+    }
+
+    return setTimeout(run, interval, resolve, reject);
+  };
+
+  return new Promise(run);
+};
+```
+
+This helper takes a function `fn` to be executed every `interval`. Also, a `validate` function is needed to know when to stop polling if the result matches the expectations. Additionally, it admits a `timeout` parameter to force polling to stop if passed some time it's not resolved.
+
+Using this helper, our component would be like:
+
+```
+useEffect(() => {
+  const googleIsLoaded = () => window.google != null && window.google.maps != null;
+  
+  if (googleIsLoaded()) {
+    bindGooglePlaces(inputFieldRef.current);
+  } else {
+    polling({
+      fn: googleIsLoaded,
+      validate: maps => maps === true,
+      interval: 100,
+      timeout: 3000
+    })
+      .then(() => bindGooglePlaces(inputFieldRef.current))
+      .catch(() => console.error(`Timeout to load google maps`));
+  }
+}, []);
+```
+
+Here we wait 3 seconds max for Google Maps library to load. 
+
+Most of the time, we should choose the callback pattern, but as you can see, sometimes the old fashioned polling is simple enough to do the job.
+
+I hope you enjoy it :)
