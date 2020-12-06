@@ -1,0 +1,70 @@
+---
+title: Using reducers to render views
+date: 2020-12-02
+language: en
+---
+
+Sometimes, you need to render JSX conditionally based on some conditions or state. The solution usually passes by using a ternary operator, because there are no if/else statements allowed inside JSX.
+
+Then, our component would look like this:
+
+```
+const Inbox = (messages) => (
+  <div>
+    {message != null
+      ? <Messages data={messages} />
+      : <div>You don't have pending messages, yay!</div>
+    }
+  </div>
+)
+```
+
+While this is great for simple components, as soon our state grows in complexity, the code can get into a mess quickly. Think of a component that fetches some data from the server. This component would have to manage the initial idle state, it should be nice to show a spinner while it's loading, then, it would show the data fetched, and of course, it should manage the errored state too. Handling this with ternary is too much.
+
+A better way to make it work is to use a reducer to render the right view based on the request status:
+
+```
+const [stateApi, fetchApi] = useFetch(apiClient);
+
+const [view, renderView] = useReducer((state, action) => {
+  switch (action.status) {
+    case "idle":
+      return (
+        <Card title="Start learning React in small pills" action={fetchApi} />
+      );
+    case "fetching":
+      return <Loading />;
+    case "fetched":
+      return <Card action={fetchApi} {...stateApi.data} />;
+    case "errored":
+      return <div>Oops, something bad happened</div>;
+    default:
+      return state;
+  }
+}, null);
+
+useEffect(() => {
+  renderView(stateApi);
+}, [stateApi.status]);
+```
+
+You can view a working example [here][]. This example uses [miragejs][] to mock the api, [emotion][] for styling and a [custom hook][] to handle requests.
+
+The `useFetch` hook is a custom hook that tracks the state of fetch requests. It returns an object like:
+
+```
+{
+  state: 'idle' | 'fetching' | 'fetched' | 'errored',
+  data,
+  error
+}
+```
+
+It's basically a state machine of a fetch request. 
+
+As you can see, reducers are neat to handle views, making the code simple and easy to understand.
+
+[here]: https://codesandbox.io/s/views-reducer-o0zvq
+[miragejs]: https://miragejs.com/
+[emotion]: https://emotion.sh/
+[custom hook]: https://codesandbox.io/s/use-fetch-3d2mu?file=/src/useFetch.js
