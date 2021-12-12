@@ -82,6 +82,8 @@ export default {
     img: {
       maxWidth: "100%",
       height: "auto",
+      display: "block",
+      margin: "auto",
     },
     pre: {
       fontFamily: "monospace",

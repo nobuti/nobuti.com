@@ -19,7 +19,6 @@ const Page = (props) => {
           lang: "en-us",
         }}
       >
-        >
         <link
           rel="apple-touch-icon"
           sizes="180x180"
