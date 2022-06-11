@@ -1,4 +1,3 @@
-
 # https://nobuti.com
 
 Personal site with thoughts on front, development, and other things
