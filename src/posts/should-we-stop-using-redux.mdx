@@ -2,6 +2,7 @@
 title: Should we stop using redux in favor of Context API?
 date: 2021-12-12
 language: en
+excerpt: This post is based on an internal lightning talk I did for my team at my current company
 ---
 
 > This post is based on an internal lightning talk I did for my team at my current company
@@ -10,7 +11,7 @@ No.
 
 That's all, end of the post. Thanks for reading me.
 
-Jokes aside, beyond the clickbait I'll try to elaborate more why `redux` (or similar) should be your first choice whean dealing with the state management, even more when you are application is medium or large size. 
+Jokes aside, beyond the clickbait I'll try to elaborate more why `redux` (or similar) should be your first choice whean dealing with the state management, even more when you are application is medium or large size.
 
 I do a lot of interviews to candidates at my current company, and it's shocking when one of them mentions that they usually manage the application state using Context API. We all know that React is fast and performant by default, but this is a dangerous way of thinking. I understand that Context API is so pleasant to work with, but it can hit your application's performace if you are not careful.
 
@@ -32,8 +33,7 @@ The boilerplate problem [has been solved][] long ago. Even you can adopt the sam
 
 So please, let's stop demonizing `redux`. Using `redux` these days is actually very pleasant and you gain a lot by using it, especially in an enterprise environment.
 
-
-[Context documentation]: https://reactjs.org/docs/context.html
+[context documentation]: https://reactjs.org/docs/context.html
 [context selector components]: https://saul-mirone.github.io/performance-optimization-in-react-context/
 [two separate contexts]: https://kentcdodds.com/blog/how-to-use-react-context-effectively
 [has been solved]: https://redux-toolkit.js.org/

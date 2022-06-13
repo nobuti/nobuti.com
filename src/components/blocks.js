@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { jsx } from "theme-ui";
+/** @jsxImportSource theme-ui */
 
 export const Banner = (props) => (
   <div
@@ -7,7 +6,7 @@ export const Banner = (props) => (
       py: [4, 5, 6],
       fontWeight: "bold",
       h1: {
-        fontSize: [5, 6, 7],
+        fontSize: [5, 6, 7]
       },
       p: {},
       ul: {
@@ -16,15 +15,15 @@ export const Banner = (props) => (
         p: 0,
         m: 0,
         a: {
-          variant: "styles.navlink",
-        },
+          variant: "styles.navlink"
+        }
       },
       li: {
-        mr: 3,
+        mr: 3
       },
       a: {
-        variant: "styles.emphasis",
-      },
+        variant: "styles.emphasis"
+      }
     }}
   >
     {props.children}
@@ -34,7 +33,7 @@ export const Banner = (props) => (
 export const Container = ({ wide, ...props }) => (
   <div
     sx={{
-      maxWidth: wide ? "wide" : "container",
+      maxWidth: wide ? "wide" : "container"
     }}
   >
     {props.children}
@@ -45,8 +44,8 @@ export const Me = (props) => (
   <div
     sx={{
       img: {
-        width: "container",
-      },
+        width: "container"
+      }
     }}
   >
     {props.children}
@@ -62,22 +61,22 @@ export const Tiles = (props) => (
         m: 0,
         display: "grid",
         gridGap: 4,
-        gridTemplateColumns: "repeat(auto-fit, minmax(256px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(256px, 1fr))"
       },
       h2: {
-        fontSize: 2,
+        fontSize: 2
       },
       img: {
         display: "block",
         width: 128,
         maxWidth: "100%",
         height: "auto",
-        m: "auto",
+        m: "auto"
       },
       a: {
-        variant: "styles.emphasis",
+        variant: "styles.emphasis"
       },
-      ...props.sx,
+      ...props.sx
     }}
   >
     {props.children}
@@ -93,12 +92,12 @@ export const List = (props) => (
         listStyle: "none",
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(256px, 1fr))",
-        gridGap: 4,
+        gridGap: 4
       },
       a: {
-        fontWeight: "bold",
+        fontWeight: "bold"
       },
-      ...props.sx,
+      ...props.sx
     }}
   >
     {props.children}

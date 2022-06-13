@@ -2,6 +2,7 @@
 title: Polling
 date: 2020-12-01
 language: en
+excerpt: Polling, in computer science, refers to actively sampling the status of an external source of data. For instance, it's a common technique when you upload a file to the server and you want to measure the progression. It's useful also when you want to check if some external library has been loaded and it's ready to use.
 ---
 
 Polling, in computer science, refers to actively sampling the status of an external source of data. For instance, it's a common technique when you upload a file to the server and you want to measure the progression. It's useful also when you want to check if some external library has been loaded and it's ready to use.
@@ -29,7 +30,7 @@ const bindGooglePlaces = (input) => {
 
 useEffect(() => {
   const googleIsLoaded = window.google != null && window.google.maps != null;
-  
+
   if (googleIsLoaded) {
     bindGooglePlaces(inputFieldRef.current);
   }
@@ -42,7 +43,7 @@ When the input field is mounted, the autocomplete functionality is injected, if 
 window.mapsLibraryLoaded = () => {}
 ```
 
-If not, Google Map library will raise an error trying to call a function that doesn't exist. Now, we can use the context API to set the loading state somehow when the callback is called, this way our component can be aware of the status changes. 
+If not, Google Map library will raise an error trying to call a function that doesn't exist. Now, we can use the context API to set the loading state somehow when the callback is called, this way our component can be aware of the status changes.
 
 But it seems a bit over-complicated. Instead of just to seat waiting to be notified (callback) why not take the opposite approach? This is where polling enters in the scene. We ask for the library presence, if it's not loaded yet, we ask for again past some milliseconds. More or less like when you travel with kids and they ask every minute if we have arrived yet.
 
@@ -79,7 +80,7 @@ Using this helper, our component would be like:
 ```
 useEffect(() => {
   const googleIsLoaded = () => window.google != null && window.google.maps != null;
-  
+
   if (googleIsLoaded()) {
     bindGooglePlaces(inputFieldRef.current);
   } else {
@@ -95,7 +96,7 @@ useEffect(() => {
 }, []);
 ```
 
-Here we wait 3 seconds max for Google Maps library to load. 
+Here we wait 3 seconds max for Google Maps library to load.
 
 Most of the time, we should choose the callback pattern, but as you can see, sometimes the old fashioned polling is simple enough to do the job.
 

@@ -2,11 +2,12 @@
 title: Reusable components or how awesome are the CSS custom properties
 date: 2020-05-13
 language: en
+excerpt: I’ve been reading a lot about _design tokens_ lately, and I think they’re super interesting. Design tokens are tiny pieces of UI information to store design related information such as colors, fonts, spaces, animations, etc...
 ---
 
 I’ve been reading a lot about _design tokens_ lately, and I think they’re super interesting. Design tokens are tiny pieces of UI information to store design related information such as colors, fonts, spaces, animations, etc...
 
-For someone who has been involved with CSS for a long time, that sounds very similar to concepts like variables, particles, atoms, style dictionary, BEM, OOCSS... In my head, all is reduced to the idea of being able to create UI pieces that behaved more like Lego blocks, optimizing the frontend development, making it _consistent_, _maintainable_, and _scalable_. 
+For someone who has been involved with CSS for a long time, that sounds very similar to concepts like variables, particles, atoms, style dictionary, BEM, OOCSS... In my head, all is reduced to the idea of being able to create UI pieces that behaved more like Lego blocks, optimizing the frontend development, making it _consistent_, _maintainable_, and _scalable_.
 
 Those concepts are cool, but to be honest, we use them to hide the fact we, as programmers, are fucking lazy. Whenever we code the same thing twice in a row, we apply the DRY concept to abstract and "automate" the process, to reuse it. So in terms of UI, the goal is to build reusable components, writing a component once, then copy-pasting everywhere.
 
@@ -50,18 +51,15 @@ Easy peasy, all seems consistent and the design translates well into the browser
 }
 ```
 
-But hey, that call to action button needs to be in the hero too, but with a subtly different style, to make the text more readable. No problem, let's add another variant. Then we need to develop a new cool feature involving tags. Tags are essentially buttons. So, you are right, we add more variants. 
+But hey, that call to action button needs to be in the hero too, but with a subtly different style, to make the text more readable. No problem, let's add another variant. Then we need to develop a new cool feature involving tags. Tags are essentially buttons. So, you are right, we add more variants.
 
-So while we add features to our project, the use of variants increases, and for variants I mean CSS classes. It's very easy to add more, but we rarely clean those unused classes because what if we need them in the future... Very quickly a simple button becomes a long list of classes, and in the end, our CSS often becomes a nightmare to maintain. 
+So while we add features to our project, the use of variants increases, and for variants I mean CSS classes. It's very easy to add more, but we rarely clean those unused classes because what if we need them in the future... Very quickly a simple button becomes a long list of classes, and in the end, our CSS often becomes a nightmare to maintain.
 
 It seems our button is not as much reusable as we thought. How can we make it reusable then? How cool it would be if we can copy-paste the button and it just works? No variants, no classes.
 
-That's is what this talk is about https://www.youtube.com/watch?v=XR6eM_5pAb0. 
+That's is what this talk is about https://www.youtube.com/watch?v=XR6eM_5pAb0.
 
-After watching the talk, some ideas came to my mind to ensure the reusability of our components:
-    - an element should expose a kind of an API to customize its behavior based on the context.
-    - an element shouldn’t set its width, margin, height, and color. These attributes should be set by their parent.
-    - CSS custom properties are very cool and are an essential part of this approach.
+After watching the talk, some ideas came to my mind to ensure the reusability of our components: - an element should expose a kind of an API to customize its behavior based on the context. - an element shouldn’t set its width, margin, height, and color. These attributes should be set by their parent. - CSS custom properties are very cool and are an essential part of this approach.
 
 Based on these principles, let's try to build our truly reusable button. First, define our API, based on the variations, we will likely need attributes for font size, border and background color, and spacing. For each of these attributes, we will introduce a CSS variable. The cool thing is that CSS variables admit a default value, and this allows define the default behavior of our button:
 
@@ -89,7 +87,7 @@ or our negative flavor:
 <button class="ReusableButton" style="--button-color: #e74c3c; --button-background: transparent;">Wadus</button>
 ```
 
-Here https://codepen.io/nobuti/pen/RwWBoEb you can view and compare both results. For sake of simplicity, I'm passing parameters through inline style, because why not. And the great thing of this approach is that it's not limited to traditional CSS, you can apply it to React and styled-components if that's your weapon of choice. Of course, this idea introduces another set of problems, organizational problems mostly, like where to put the limit of customization, how many custom properties are too much... 
+Here https://codepen.io/nobuti/pen/RwWBoEb you can view and compare both results. For sake of simplicity, I'm passing parameters through inline style, because why not. And the great thing of this approach is that it's not limited to traditional CSS, you can apply it to React and styled-components if that's your weapon of choice. Of course, this idea introduces another set of problems, organizational problems mostly, like where to put the limit of customization, how many custom properties are too much...
 
 But I think this is definitely a step forward in the right direction. I hope you like it as much as I do!
 

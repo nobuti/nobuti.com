@@ -2,6 +2,7 @@
 title: Using reducers to render views
 date: 2020-12-02
 language: en
+excerpt: Sometimes, you need to render JSX conditionally based on some conditions or state. Read how we can use reducers to avoid ternary operations abuse.
 ---
 
 Sometimes, you need to render JSX conditionally based on some conditions or state. The solution usually passes by using a ternary operator, because there are no if/else statements allowed inside JSX.
@@ -60,7 +61,7 @@ The `useFetch` hook is a custom hook that tracks the state of fetch requests. It
 }
 ```
 
-It's basically a state machine of a fetch request. 
+It's basically a state machine of a fetch request.
 
 As you can see, reducers are neat to handle views, making the code simple and easy to understand.
 
