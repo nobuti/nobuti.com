@@ -8,6 +8,9 @@ import { getAllArticles } from "../../lib/mdx";
 import Meta from "../../components/meta";
 
 export default function Thoughts({ posts }) {
+  const getTitle = (post) =>
+    `${post.title || post.slug} ${post.draft ? "*" : ""}`;
+
   return (
     <>
       <Meta title="Buti" description="Thoughts" />
@@ -34,7 +37,7 @@ export default function Thoughts({ posts }) {
                       textDecoration: "none"
                     }}
                   >
-                    {post.title || post.slug}
+                    {getTitle(post)}
                   </a>
                 </Link>
               </components.h2>
@@ -52,9 +55,10 @@ export default function Thoughts({ posts }) {
 
 export async function getStaticProps() {
   const articles = await getAllArticles();
+  const isDevelopment = process.env.NODE_ENV === "development";
 
   const posts = [...articles]
-    .filter((article) => !article.draft)
+    .filter((article) => (isDevelopment ? true : !article.draft))
     .sort((a, b) => (dayjs(a.date).isAfter(dayjs(b.date)) ? -1 : 1));
 
   return {
