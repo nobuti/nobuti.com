@@ -1,0 +1,61 @@
+---
+title: Avoid context hell
+date: 2022-07-26
+language: en
+excerpt: One of the rule to optmize context api performance is to split make them small. This can be translated in a bigger amount of smaller contexts, and just like that, you will end up with the Context pyramid of hell.
+---
+
+There is a trend about replacing state management libraries with React Context api. [Please not][].
+
+But even when you don't use it like this, it's likely you end up with something like this:
+
+```
+const Main = () => (
+  <ContextProviderOne>
+    <ContextProviderTwo>
+      <ContextProviderThree>
+        <ContextProviderFour>
+          <ContextProviderN>
+            <App />
+          </ContextProviderN>
+        </ContextProviderFour>
+      </ContextProviderThree>
+    </ContextProviderTwo>
+  </ContextProviderOne>
+)
+```
+
+Because one of the rule of React Context api performance is to split contexts in much smaller contexts, holding atomic values whenever you can, you will end up having what I call context pyramid of hell. Lets admit it, this is not pleasant. But there is a better way to work with multiple Contexts using composition.
+
+Creating a helper function that composes multiple Providers and returns a single Provider component we can improve our context management:
+
+```
+const composeProviders = (...providers) => ({ children }) => {
+  return providers.reduceRight(
+    (child, Provider) => <Provider>{child}</Provider>,
+    children
+  )
+}
+```
+
+Using `reduceRight` allows us to keep the herarchy between context providers.
+
+The way to use this helper would be like this:
+
+```
+const Providers = composeProviders(
+  ContextProviderOne,
+  ContextProviderTwo,
+  ContextProviderThree,
+  ContextProviderFour,
+  ContextProviderN
+);
+
+const Provider = ({ children }) => <Providers>{children}</Providers>;
+
+export default Provider;
+```
+
+As you see, the result is the same but the code is cleaner and much readable.
+
+[please not]: /thoughts/should-we-stop-using-redux
