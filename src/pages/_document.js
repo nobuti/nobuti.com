@@ -10,7 +10,15 @@ class CustomDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          {/* add allow_local: true to data-goatcounter-settings to allow localhost dev environment */}
+          <script
+            data-goatcounter="https://nobuti.goatcounter.com/count"
+            data-goatcounter-settings='{"no_onload": true}'
+            async
+            src="/scripts/goatcounter.js"
+          ></script>
+        </Head>
         <body>
           <InitializeColorMode />
           <Main />
