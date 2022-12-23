@@ -1,0 +1,63 @@
+---
+title: useReducer is underrated
+date: 2023-12-22
+language: en
+excerpt: Despite useReducer has been always linked to redux, it's the most awesome hook and way more superior than useState to handle the state. 
+---
+
+`useReducer` is a hook from React, similar to `useState` but gives you more control to manage the state. It takes a reducer function and initial state as arguments and returns the current state and method to update the state:
+
+```
+const [state, dispatch] = useReducer(reducerFn, initialState)
+```
+
+This is a pattern taken from the Redux, that's why the updater function is usually called `dispatch`. The reducer function is a pure function that takes the current state and the action as arguments and returns the new state:
+
+```
+(prevState, action) => newState
+```
+
+Most of the time, the action is an object with a `type` property, but it can be anything. This is why it is a more superior way to handle the state than `useState` because it gives you more control over the state and it's more predictable.
+
+Using `useReducer` as replacement of `useState` it is as easier than grouping multiple related `useState` hooks into a `useReducer`:
+
+```
+// Separated useState hooks
+const [words, setWords] = useState(0);
+const [author, setAuthor] = useState('');
+const [title, setTitle] = useState('');
+const [updatedAt, setUpdatedAt] = useState();
+
+// Single useReducer hook
+const [book, updateBook] = useReducer((state:State, payload:Partial<State>):State => {
+  return {
+    ...state,
+    ...payload
+  }
+}, { words: 0, author: '', title: '', updatedAt: undefined });
+```
+
+To update the book state, you can use the `updateBook` function, and unlike `useState` you can pass an object with multiple properties to update at once:
+
+```
+updateBook({ words: 1000, author: 'David' });
+```
+
+The `useReducer` hook is a great way to centralize the state management and ensures the data integrity easier no matter where the update state function is called from:
+
+```
+const [book, updateBook] = useReducer((state, payload) => {
+  const newState = {
+    ...state,
+    ...payload,
+    updatedAt: new Date()
+  }
+
+  newState.author = newState.author.trim();
+  newState.title = newState.title.trim();
+
+  return newState;
+}, { words: 0, author: '', title: '', updatedAt: undefined });
+```
+
+I know you all love your useStates, but let's admit it, `useReducer` is better, in fact `useState` is a simplified `useReducer` as technically it is `useReducer` under the hood. 
