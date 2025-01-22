@@ -1,0 +1,204 @@
+---
+title: Understanding debounce
+date: 2025-01-22
+language: en
+excerpt: In today's web applications, handling user input efficiently is crucial for performance. One common challenge is managing frequent events like window resizing, scroll events, or real-time search input. This is where the debounce function comes in handy – a powerful technique to control how often your code executes.
+---
+
+In today's web applications, handling user input efficiently is crucial for performance. One common challenge is managing frequent events like window resizing, scroll events, or real-time search input. This is where the debounce function comes in handy – a powerful technique to control how often your code executes.
+
+## What is Debouncing?
+
+Debouncing is a programming technique used to ensure that a function is executed only once during a specified time period, even if it is invoked repeatedly. It is commonly used to improve performance and prevent excessive function calls, especially in scenarios where events are triggered frequently (e.g., key presses, window resizing, scrolling, or API requests).
+
+In programming terms, debouncing ensures that time-consuming tasks don't fire so often that they hurt performance. It works by delaying the execution of a function until after a certain amount of time has passed since its last invocation.
+
+## Common use cases
+
+Debouncing is particularly useful in these common scenarios:
+
+- Search Input Fields: When implementing real-time search, you don't want to make API calls for every keystroke. Instead, wait until the user stops typing for a moment.
+- Window Resize Events: Recalculating layouts on every resize event can be expensive. Debouncing helps limit these calculations.
+- Save Drafts: In text editors or form applications, you might want to auto-save changes, but not for every keystroke.
+- Scroll events: Reduce the number of operations triggered during scrolling.
+
+## Related Concept: Throttle
+
+While `debounce` delays function execution until after a specified delay, throttle ensures a function is executed at regular intervals regardless of how many times it's triggered.
+
+## Plain JavaScript implementation
+
+Here's a simple implementation of a debounce function:
+
+```
+function debounce(func, waitMs) {
+  let timeoutId;
+
+  return function (...args) {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, waitMs);
+  };
+}
+```
+
+And an example usage:
+
+```
+const handleSearch = (event) => {
+  const searchTerm = event.target.value;
+  console.log(`Searching for: ${searchTerm}`);
+  // Make API call here
+};
+
+// Create debounced version
+const debouncedSearch = debounce(handleSearch, 500);
+
+// Add event listener
+searchInput.addEventListener('input', debouncedSearch);
+```
+
+## Adding TypeScript Support
+
+Let's enhance our debounce function to make it type safe:
+
+```
+function debounce<T extends (...args: Parameters<T>) => ReturnType<T>>(
+ callback: T,
+ delay: number
+) {
+ let timer: ReturnType<typeof setTimeout>;
+ return (...args: Parameters<T>) => {
+  const p = new Promise<ReturnType<T> | Error>((resolve, reject) => {
+   clearTimeout(timer);
+   timer = setTimeout(() => {
+    try {
+     let output = callback(...args);
+     resolve(output);
+    } catch (err) {
+     if (err instanceof Error) {
+      reject(err);
+     }
+     reject(new Error(`An error has occurred:${err}`));
+    }
+   }, delay);
+  });
+  return p;
+ };
+}
+```
+
+This implementation:
+
+- It correctly infers parameter types through `Parameters<T>`
+- It properly handles both synchronous and asynchronous functions
+- It includes error handling with try/catch
+- The return type is properly typed as `Promise<ReturnType<T> | Error>`
+
+This is an example usage:
+
+```
+// Example usage with TypeScript
+interface SearchEvent {
+  target: {
+    value: string;
+  };
+}
+
+// Type-safe search handler
+const handleSearch = async (event: SearchEvent): Promise<void> => {
+  const searchTerm = event.target.value;
+  return fetch(`/api/search?q=${searchTerm}`)
+    .then(response => response.json());
+};
+
+const debouncedSearch = debounce(handleSearch, 500);
+
+// TypeScript now knows this returns a Promise
+debouncedSearch({ target: { value: 'search term' } })
+  .then(results => console.log(results));
+```
+
+And some unit tests for our `debounce` function:
+
+```
+describe('debounce', () => {
+  jest.useFakeTimers();
+
+  it('should debounce a synchronous function', async () => {
+    const callback = jest.fn((x: number) => x * 2);
+    const debounced = debounce(callback, 1000);
+
+    // Call the debounced function multiple times
+    debounced(2);
+    debounced(3);
+    const resultPromise = debounced(4);
+
+    // Fast forward the timers
+    jest.advanceTimersByTime(1000);
+
+    // Wait for the promise to resolve
+    const result = await resultPromise;
+
+    // Expect the callback to have been called only once with the last argument
+    expect(callback).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledWith(4);
+    expect(result).toBe(8);
+  });
+
+  it('should debounce a promise-based asynchronous function', async () => {
+    const callback = jest.fn(async (x: number) => x * 2);
+    const debounced = debounce(callback, 1000);
+    const resultPromise = debounced(5);
+
+    // Fast forward the timers
+    jest.advanceTimersByTime(1000);
+
+    // Wait for the promise to resolve
+    const result = await resultPromise;
+
+    expect(callback).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledWith(5);
+    expect(result).toBe(10);
+  });
+
+  it('should handle errors thrown by the callback', async () => {
+    const callback = jest.fn(() => {
+        throw new Error('Test error');
+    });
+    const debounced = debounce(callback, 1000);
+
+    // Call the debounced function and expect it to throw
+    const resultPromise = debounced();
+
+    // Fast forward the timers
+    jest.advanceTimersByTime(1000);
+
+    // Assert that the promise rejects with the correct error
+    await expect(resultPromise).rejects.toThrow('Test error');
+
+    // Ensure the callback was called once
+    expect(callback).toHaveBeenCalledTimes(1);
+  });
+});
+
+```
+
+In these tests `jest.useFakeTimers()` is used to control the timer in tests. `jest.advanceTimersByTime(1000)` simulates the passage of time for the debounce delay.
+
+## Best Practices
+
+When using debounce in your applications, consider these tips:
+
+- Choose an appropriate delay time based on your use case. For search inputs, 300-500ms is common.
+- Clean up debounced event listeners when components unmount to prevent memory leaks.
+- Consider using existing implementations from libraries like Lodash if you don't need custom functionality.
+- Test debounced functions with different timing scenarios to ensure they behave as expected.
+
+## Conclusion
+
+Debouncing is a powerful technique that can significantly improve the performance and user experience of your web applications. Whether you're handling search inputs, window resizes, or any other frequent events, a well-implemented debounce function can help you maintain smooth application performance while reducing unnecessary function calls.
+
+Remember to consider TypeScript when building larger applications, as it provides valuable type safety and better developer experience. The examples provided should give you a solid foundation for implementing debounce in your own projects.
