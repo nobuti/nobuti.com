@@ -1,8 +1,9 @@
 /** @jsxImportSource theme-ui */
 
 import Link from "next/link";
+import { FaGithub as GitHub } from "react-icons/fa";
 
-import { FaTwitter as Twitter, FaGithub as GitHub } from "react-icons/fa";
+const currentYear = new Date().getFullYear();
 
 const Component = (props) => {
   return (
@@ -84,16 +85,6 @@ const Component = (props) => {
           }}
         >
           <a
-            href="https://twitter.com/nobuti"
-            title="Twitter"
-            sx={{
-              variant: "styles.navitem",
-              mx: 3
-            }}
-          >
-            <Twitter size={24} />
-          </a>
-          <a
             href="https://github.com/nobuti"
             title="GitHub"
             sx={{
@@ -142,7 +133,7 @@ const Component = (props) => {
             </a>
           </Link>
           <div sx={{ mx: "auto" }} />
-          <div sx={{ my: 2 }}>© 2022 Buti</div>
+          <div sx={{ my: 2 }}>©{currentYear} Buti</div>
         </div>
       </footer>
     </div>

@@ -33,7 +33,11 @@ export const Banner = (props) => (
 export const Container = ({ wide, ...props }) => (
   <div
     sx={{
-      maxWidth: wide ? "wide" : "container"
+      maxWidth: wide ? "wide" : "container",
+      a: {
+        variant: "styles.emphasis"
+      },
+      ...props.sx
     }}
   >
     {props.children}
