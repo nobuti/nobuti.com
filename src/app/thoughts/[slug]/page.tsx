@@ -1,6 +1,12 @@
 import { getAllArticles } from "@/lib/mdx";
 import dayjs from "dayjs";
+import type { Metadata } from "next";
 import styles from "./styles.module.css";
+
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
 export default async function Page({
   params,
@@ -27,6 +33,17 @@ export async function generateStaticParams() {
   return allTheArticles.map((article) => ({
     slug: article.slug.replace(/\.mdx$/, ""),
   }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const slug = (await params).slug;
+
+  const { metadata } = await import(`@/posts/${slug}.mdx`);
+
+  return {
+    ...metadata,
+    description: metadata.description || metadata.excerpt,
+  };
 }
 
 export const dynamicParams = false;
