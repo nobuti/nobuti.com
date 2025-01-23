@@ -1,6 +1,9 @@
-import { Banner, Tiles, Container, List } from "../components/blocks";
-import Meta from "../components/meta";
+import React from "react";
+import { Banner } from "../components/Home/Banner/Banner";
+import { Tiles } from "../components/Home/Tiles/Tiles";
+import { Meta } from "../components/Meta";
 
+<>
 <Meta />
 <Banner>
 
@@ -15,19 +18,18 @@ Based in Málaga, Spain<br />I am available for small/medium sized projects
 
 </Banner>
 
-## Some of my projects
-
 <Tiles>
+  ## Some of my projects
 
-- ## [Lingoda][]
+- [Lingoda][]
   Uber small i18n library for general purpose
-- ## [Retemplate][]
+- [Retemplate][]
   A template utility to build composable strings with jsx elements
-- ## [Styled reset][]
+- [Styled reset][]
   A modern opinated css reset to use it with styled-components
-- ## [React plug][]
+- [React plug][]
   React hooks ready to plug and play. Small utility library implementing react hooks
-- ## [Npm origin][]
+- [Npm origin][]
   Npm package starter boilerplate. Clone it and focus on your code
 
 [lingoda]: https://github.com/nobuti/lingoda
@@ -44,3 +46,5 @@ Based in Málaga, Spain<br />I am available for small/medium sized projects
 [audiense]: https://audiense.com
 [bebanjo]: https://bebanjo.com
 [eventbrite]: https://eventbrite.com
+
+</>

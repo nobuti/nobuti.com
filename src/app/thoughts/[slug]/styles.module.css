@@ -1,0 +1,67 @@
+.container {
+  padding: 2rem 0;
+}
+.container h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  padding: 2rem 0 0 0;
+
+  @media (min-width: 40em) {
+    font-size: 3rem;
+  }
+}
+
+.container h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  padding: 1rem 0;
+
+  @media (min-width: 40em) {
+    font-size: 2rem;
+  }
+}
+
+.container ul {
+  list-style-type: disc;
+  margin: 0 0 0 1.5rem;
+  padding: 0 0 1.25rem 0;
+}
+
+.container p,
+.container li {
+  font-size: 1.25rem;
+}
+
+.container p {
+  padding: 0 0 1.25rem 0;
+}
+
+.container a {
+  color: var(--primary);
+  font-weight: 700;
+
+  &:hover,
+  &:focus {
+    color: var(--secondary);
+  }
+}
+
+.container pre {
+  font-family: monospace;
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.container code {
+  color: var(--secondary);
+  font-family: monospace;
+  font-size: 1.25rem;
+}
+
+.date {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}

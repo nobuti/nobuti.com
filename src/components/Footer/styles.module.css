@@ -1,0 +1,31 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.navigation {
+  display: flex;
+  flex: 1;
+}
+
+.list {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.link {
+  color: var(--foreground);
+  font-weight: 700;
+
+  &:hover,
+  &:focus {
+    color: var(--primary);
+  }
+}
+
+.copy {
+  margin-right: auto;
+}

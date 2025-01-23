@@ -1,0 +1,32 @@
+.container {
+  padding-top: 4rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  list-style: none;
+}
+
+.list h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+
+  @media (min-width: 40em) {
+    font-size: 3rem;
+  }
+}
+
+.date {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.excerpt {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.5;
+}

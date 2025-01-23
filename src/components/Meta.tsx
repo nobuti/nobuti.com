@@ -3,7 +3,12 @@ import Head from "next/head";
 const DEFAULT_TITLE = "Buti";
 const DEFAULT_DESCRIPTION = "Software Engineer";
 
-const Meta = (props) => {
+interface MetaProps {
+  title?: string;
+  description?: string;
+}
+
+export const Meta = (props: MetaProps) => {
   const { title, description } = props;
   const canonicalUrl =
     typeof window === "undefined"
@@ -49,5 +54,3 @@ const Meta = (props) => {
     </Head>
   );
 };
-
-export default Meta;

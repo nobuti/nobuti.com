@@ -1,9 +1,10 @@
----
-title: useReducer is underrated
-date: 2022-12-23
-language: en
-excerpt: Despite useReducer has been always linked to redux, it's the most awesome hook and way more superior than useState to handle the state. 
----
+export const metadata = {
+  title: "useReducer is underrated",
+  language: "en",
+  date: "2022-12-23",
+  excerpt:
+    "Despite useReducer has been always linked to redux, it's the most awesome hook and way more superior than useState to handle the state.",
+};
 
 `useReducer` is a hook from React, similar to `useState` but gives you more control to manage the state. It takes a reducer function and initial state as arguments and returns the current state and method to update the state:
 
@@ -60,4 +61,4 @@ const [book, updateBook] = useReducer((state, payload) => {
 }, { words: 0, author: '', title: '', updatedAt: undefined });
 ```
 
-I know you all love your useStates, but let's admit it, `useReducer` is better, in fact `useState` is a simplified `useReducer` as technically it is `useReducer` under the hood. 
+I know you all love your useStates, but let's admit it, `useReducer` is better, in fact `useState` is a simplified `useReducer` as technically it is `useReducer` under the hood.

@@ -1,9 +1,10 @@
----
-title: Mocking modules in Jest
-date: 2020-03-30
-language: en
-excerpt: Our unit tests should never rely on code that is outside our control and they certainly shouldn't be calling across the network to a server. A good test needs to be repeatable and fast and relying on outside systems and/or data doesn't help us meet those goals.
----
+export const metadata = {
+  title: "Mocking modules in Jest",
+  language: "en",
+  date: "2020-03-30",
+  excerpt:
+    "Our unit tests should never rely on code that is outside our control and they certainly shouldn't be calling across the network to a server. A good test needs to be repeatable and fast and relying on outside systems and/or data doesn't help us meet those goals.",
+};
 
 Our unit tests should never rely on code that is outside our control and they certainly shouldn't be calling across the network to a server. A good test needs to be repeatable and fast and relying on outside systems and/or data doesn't help us meet those goals. In this lesson, we'll use mocks to create an environment where we control the response for service calls. This will allow us to be confident in our assertions and ensure our tests aren't flaky. Let's see an example of mocking a module to manage the API response.
 
