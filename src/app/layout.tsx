@@ -27,8 +27,8 @@ export default function RootLayout({
 
         <Script
           data-goatcounter="https://nobuti.goatcounter.com/count"
-          data-goatcounter-settings='{"no_onload": "true"}'
-          src="/scripts/goatcounter.js"
+          async
+          src="//gc.zgo.at/count.js"
         />
       </body>
     </html>
