@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
 import { Main } from "@/components/Main/Main";
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,6 +24,12 @@ export default function RootLayout({
           <Main>{children}</Main>
           <Footer />
         </Container>
+
+        <Script
+          data-goatcounter="https://nobuti.goatcounter.com/count"
+          data-goatcounter-settings='{"no_onload": "true"}'
+          src="/scripts/goatcounter.js"
+        />
       </body>
     </html>
   );
