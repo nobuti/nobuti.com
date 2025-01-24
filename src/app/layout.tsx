@@ -1,9 +1,9 @@
+import { Analytics } from "@/components/Analytics";
 import { Container } from "@/components/Container/Container";
 import { Footer } from "@/components/Footer/Footer";
 import { Header } from "@/components/Header/Header";
 import { Main } from "@/components/Main/Main";
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,17 +19,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
+        <Analytics />
         <Container>
           <Header />
           <Main>{children}</Main>
           <Footer />
         </Container>
-
-        <Script
-          data-goatcounter="https://nobuti.goatcounter.com/count"
-          async
-          src="//gc.zgo.at/count.js"
-        />
       </body>
     </html>
   );
