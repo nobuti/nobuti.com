@@ -33,7 +33,7 @@ export function Analytics() {
   return (
     <Script
       data-goatcounter="https://nobuti.goatcounter.com/count"
-      data-goatcounter-settings='{"allow_local": true, "no_onload": true}'
+      data-goatcounter-settings='{"no_onload": true}'
       src="//gc.zgo.at/count.js"
       strategy="afterInteractive"
     />
