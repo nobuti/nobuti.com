@@ -1,0 +1,262 @@
+export const metadata = {
+  title: "Resilience Patterns in TypeScript: Circuit Breaker",
+  language: "en",
+  date: "2025-02-20",
+  excerpt:
+    "Learn about resilience patterns and how to implement the Circuit Breaker pattern in TypeScript to build robust applications.",
+};
+
+## What is Resilience?
+
+Resilience in software engineering refers to the ability of a system to handle and recover from failures gracefully. It ensures that the system remains functional and responsive even when some components fail. Implementing resilience patterns helps in building robust and fault-tolerant applications. It's not about preventing failures entirely, but about designing systems that can:
+
+- Continue functioning when parts of the system experience issues
+- Prevent cascading failures
+- Provide a smooth user experience even under challenging conditions
+
+## Resilience patterns
+
+Before diving deep into the Circuit Breaker pattern, let's explore the key resilience patterns that developers can leverage:
+
+### Retry Pattern
+
+- Automatically attempts to re-execute a failed operation
+- Useful for transient failures like network interruptions
+- Prevents immediate failure for operations that might succeed on a second attempt
+
+### Fallback Pattern
+
+- Provides an alternative action when a primary operation fails
+- Ensures a backup plan is always available
+- Helps maintain a consistent user experience during service disruptions
+
+### Circuit Breaker Pattern
+
+- Prevents a system from repeatedly trying operations that are likely to fail
+- Provides automatic protection against sustained failures
+- Allows systems to "take a break" and recover
+
+### Timeout Pattern
+
+- Sets a maximum time limit for operations
+- Prevents long-running processes from blocking system resources
+- Ensures responsive and predictable system behavior
+
+### Rate Limiting Pattern
+
+- Controls the rate of requests to prevent system overload
+- Protects against potential DoS (Denial of Service) scenarios
+- Ensures fair resource allocation
+
+## Deep Dive: Circuit Breaker Pattern
+
+The Circuit Breaker pattern is a design pattern used to detect failures and prevent the application from trying to perform an operation that is likely to fail. It acts as a switch that opens (breaks the circuit) when failures reach a certain threshold, and closes (resumes normal operation) after a specified timeout period.
+
+The Circuit Breaker pattern is inspired by electrical circuit breakers. Just as an electrical breaker stops current flow to prevent damage during an overload, a software circuit breaker stops operations that are likely to fail, preventing system-wide degradation.
+
+## Circuit Breaker States
+
+```mermaid
+[Closed] ──► Failures Accumulate ──► [Open]
+   ▲                                   │
+   │                                   ▼
+[Half-Open] ◄── Timeout/Retry Allowed ─┘
+```
+
+The pattern typically has three states:
+
+- `Closed`:
+  - Normal operation
+  - Requests are allowed to proceed
+  - Tracks failures and transitions to Open state if failure threshold is reached
+- `Open`:
+  - All requests are immediately rejected
+  - Prevents overwhelming a failing system
+  - Provides time for the system to recover
+- `Half-Open`:
+  - Allows a limited number of test requests
+  - Determines if the system has recovered
+  - Can transition back to Closed or remain Open based on test results
+
+## Implementing Circuit Breaker in TypeScript
+
+Let's implement a simple Circuit Breaker in TypeScript. We'll create a class that encapsulates the Circuit Breaker logic and can be used to protect critical operations.
+
+```typescript
+enum CircuitBreakerState {
+  Closed,
+  Open,
+  HalfOpen,
+}
+
+class CircuitBreaker {
+  private state: CircuitBreakerState = CircuitBreakerState.Closed;
+  private failureThreshold: number;
+  private failureCount: number = 0;
+  private recoveryTimeout: number;
+  private lastFailureTime: number = 0;
+
+  constructor(failureThreshold = 3, recoveryTimeout = 5000) {
+    this.failureThreshold = failureThreshold;
+    this.recoveryTimeout = recoveryTimeout;
+  }
+
+  async execute<T>(fn: () => Promise<T>): Promise<T> {
+    if (this.state === CircuitBreakerState.Open) {
+      const timeSinceLastFailure = Date.now() - this.lastFailureTime;
+
+      if (timeSinceLastFailure < this.recoveryTimeout) {
+        throw new Error("Circuit is OPEN");
+      }
+
+      this.state = CircuitBreakerState.HalfOpen;
+    }
+
+    try {
+      const result = await fn();
+
+      if (this.state === CircuitBreakerState.HalfOpen) {
+        this.state = CircuitBreakerState.Closed;
+        this.failureCount = 0;
+      }
+
+      return result;
+    } catch (error) {
+      this.handleFailure();
+      throw error;
+    }
+  }
+
+  private handleFailure() {
+    this.failureCount++;
+
+    if (this.failureCount >= this.failureThreshold) {
+      this.state = CircuitBreakerState.Open;
+      this.lastFailureTime = Date.now();
+    }
+  }
+}
+```
+
+## Unit tests
+
+Let's write some unit tests to validate the behavior of our Circuit Breaker implementation. We'll use Jest as our testing framework.
+
+```typescript
+import { CircuitBreaker, CircuitBreakerState } from "./circuitBreaker";
+
+describe("CircuitBreaker", () => {
+  let circuitBreaker: CircuitBreaker;
+  let mockSuccessFunction: jest.Mock;
+  let mockFailureFunction: jest.Mock;
+
+  const throwErrorsInSequence = async (n: number, fn: () => Promise<void>) => {
+    for (let i = 0; i < n; i++) {
+      try {
+        await fn();
+      } catch {}
+    }
+  };
+
+  beforeEach(() => {
+    circuitBreaker = new CircuitBreaker(3, 100);
+
+    mockSuccessFunction = jest.fn().mockResolvedValue("Success");
+    mockFailureFunction = jest.fn().mockRejectedValue(new Error("Failure"));
+  });
+
+  test("should initially be in Closed state", async () => {
+    expect((circuitBreaker as any).state).toBe(CircuitBreakerState.Closed);
+  });
+
+  test("should allow requests when in Closed state", async () => {
+    await circuitBreaker.execute(mockSuccessFunction);
+    expect(mockSuccessFunction).toHaveBeenCalledTimes(1);
+  });
+
+  test("should transition to Open state after exceeding failure threshold", async () => {
+    try {
+      await throwErrorsInSequence(3, () =>
+        circuitBreaker.execute(mockFailureFunction)
+      );
+    } catch {}
+
+    expect((circuitBreaker as any).state).toBe(CircuitBreakerState.Open);
+  });
+
+  test("should prevent requests when in Open state", async () => {
+    try {
+      await throwErrorsInSequence(4, () =>
+        circuitBreaker.execute(mockFailureFunction)
+      );
+    } catch {}
+
+    expect(mockFailureFunction).toHaveBeenCalledTimes(3);
+    await expect(circuitBreaker.execute(mockSuccessFunction)).rejects.toThrow(
+      "Circuit is OPEN"
+    );
+  });
+
+  test("should transition to Half-Open state after recovery timeout", async () => {
+    // Override timeout to make testing easier
+    const shortTimeoutCircuitBreaker = new CircuitBreaker(3, 10);
+
+    try {
+      await throwErrorsInSequence(4, () =>
+        circuitBreaker.execute(mockFailureFunction)
+      );
+    } catch {}
+
+    await new Promise((resolve) => setTimeout(resolve, 20));
+
+    await shortTimeoutCircuitBreaker.execute(mockSuccessFunction);
+    expect(mockSuccessFunction).toHaveBeenCalledTimes(1);
+  });
+
+  test("should return to Closed state if test request succeeds", async () => {
+    try {
+      await throwErrorsInSequence(3, () =>
+        circuitBreaker.execute(mockFailureFunction)
+      );
+    } catch {}
+
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    await circuitBreaker.execute(mockSuccessFunction);
+    await circuitBreaker.execute(mockSuccessFunction);
+    expect(mockSuccessFunction).toHaveBeenCalledTimes(2);
+  });
+});
+```
+
+## Usage Example
+
+```typescript
+const apiCircuitBreaker = new CircuitBreaker(3, 10000);
+
+async function fetchUserData() {
+  try {
+    const userData = await apiCircuitBreaker.execute(async () => {
+      // Your API call or potentially failing operation
+      const response = await fetch("/user-data");
+      return response.json();
+    });
+    console.log(userData);
+  } catch (error) {
+    console.error("Request failed", error);
+  }
+}
+```
+
+## Considerations and Best Practices
+
+- Tune failure thresholds and timeouts based on your specific use case
+- Log circuit breaker state changes for monitoring
+- Consider adding more sophisticated failure tracking
+- Integrate with monitoring and alerting systems
+
+## Conclusion
+
+The Circuit Breaker pattern is a powerful resilience technique that helps build robust, fault-tolerant applications. By understanding and implementing this pattern, you can create systems that gracefully handle failures and maintain performance under challenging conditions.
+
+Up Next in the Resilience Patterns Series: Stay tuned for our next post exploring the Retry Pattern!
