@@ -1,0 +1,246 @@
+export const metadata = {
+  title: "Resilience Patterns in TypeScript: Fallback",
+  language: "en",
+  date: "2025-01-27",
+  excerpt:
+    "In modern distributed systems, failures are inevitable. Whether it's a network outage, service downtime, or resource exhaustion, your application needs to gracefully handle these scenarios. This article explores various fallback patterns in TypeScript that can help build more resilient systems.",
+};
+
+In modern distributed systems, failures are inevitable. Whether it's a network outage, service downtime, or resource exhaustion, your application needs to gracefully handle these scenarios. This article explores various fallback patterns in TypeScript that can help build more resilient systems.
+
+## Understanding Fallback Patterns
+
+Fallback patterns are strategies that provide alternative solutions when primary operations fail. They're crucial for maintaining system availability and providing degraded but functional service during failures. Let's explore some common fallback patterns.
+
+## Default Value Fallback
+
+The simplest form of fallback is providing a default value when an operation fails. TypeScript's type system helps ensure type safety in these scenarios.
+
+```typescript
+class ConfigService {
+  private cache: Map<string, any> = new Map();
+
+  getConfiguration<T>(key: string, defaultValue: T): T {
+    try {
+      const value = this.cache.get(key);
+      return value !== undefined ? value : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  }
+}
+
+// Usage
+const config = new ConfigService();
+const timeout = config.getConfiguration("timeout", 5000); // Returns 5000 if not found
+```
+
+## Circuit Breaker with Fallback
+
+The [Circuit Breaker pattern](/thoughts/resilience-patterns-circuit-breaker) prevents cascading failures by temporarily stopping operations that are likely to fail. Here's the improved implementation with fallback support:
+
+```typescript
+enum CircuitBreakerState {
+  Closed,
+  Open,
+  HalfOpen,
+}
+
+class CircuitBreaker {
+  private state: CircuitBreakerState = CircuitBreakerState.Closed;
+  private failureThreshold: number;
+  private failureCount: number = 0;
+  private recoveryTimeout: number;
+  private lastFailureTime: number = 0;
+
+  constructor(failureThreshold = 3, recoveryTimeout = 5000) {
+    this.failureThreshold = failureThreshold;
+    this.recoveryTimeout = recoveryTimeout;
+  }
+
+  async execute<T>(
+    fn: () => Promise<T>,
+    fallback?: () => Promise<T>
+  ): Promise<T> {
+    if (this.state === CircuitBreakerState.Open) {
+      const timeSinceLastFailure = Date.now() - this.lastFailureTime;
+
+      if (timeSinceLastFailure < this.recoveryTimeout) {
+        throw new Error("Circuit is OPEN");
+      }
+
+      this.state = CircuitBreakerState.HalfOpen;
+    }
+
+    try {
+      let result = await fn();
+
+      if (this.state === CircuitBreakerState.HalfOpen) {
+        this.state = CircuitBreakerState.Closed;
+        this.failureCount = 0;
+      }
+
+      return result;
+    } catch (error) {
+      this.handleFailure();
+
+      if (fallback) {
+        this.handleFallback();
+      }
+
+      throw error;
+    }
+  }
+
+  private handleFallback() {
+    try {
+      const result = await fallback();
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private handleFailure() {
+    this.failureCount++;
+
+    if (this.failureCount >= this.failureThreshold) {
+      this.state = CircuitBreakerState.Open;
+      this.lastFailureTime = Date.now();
+    }
+  }
+}
+```
+
+You can take the tests from the [Circuit Breaker article](/thoughts/resilience-patterns-circuit-breaker) and extend them to cover the fallback behavior:
+
+```typescript
+test("should execute the fallback function when the primary function fails", async () => {
+  const breaker = new CircuitBreaker(1, 100);
+
+  const primaryFn = jest
+    .fn()
+    .mockRejectedValue(new Error("Primary function failed"));
+  const fallbackFn = jest.fn().mockResolvedValue("Fallback result");
+
+  await breaker.execute(primaryFn, fallbackFn);
+
+  expect(primaryFn).toHaveBeenCalledTimes(1);
+  expect(fallbackFn).toHaveBeenCalledTimes(1);
+});
+
+test("should return the result of the fallback function when the primary function fails", async () => {
+  const breaker = new CircuitBreaker(1, 100);
+
+  const primaryFn = jest
+    .fn()
+    .mockRejectedValue(new Error("Primary function failed"));
+  const fallbackFn = jest.fn().mockResolvedValue("Fallback result");
+
+  const result = await breaker.execute(primaryFn, fallbackFn);
+
+  expect(result).toBe("Fallback result");
+});
+
+test("should throw an error if both the primary and fallback functions fail", async () => {
+  const breaker = new CircuitBreaker(1, 100);
+
+  const primaryFn = jest
+    .fn()
+    .mockRejectedValue(new Error("Primary function failed"));
+  const fallbackFn = jest
+    .fn()
+    .mockRejectedValue(new Error("Fallback function failed"));
+
+  await expect(breaker.execute(primaryFn, fallbackFn)).rejects.toThrow(
+    "Fallback function failed"
+  );
+});
+```
+
+## Chain of Responsibility Fallback
+
+This fallback pattern creates a sequence of operations where each subsequent operation serves as a fallback for the previous one, and it is particularly valuable when you have multiple data sources or operations with different trade-offs in terms of reliability, performance, and data freshness.
+
+```typescript
+interface DataProvider<T> {
+  getData(): Promise<T>;
+}
+
+class FallbackChain<T> {
+  private providers: DataProvider<T>[] = [];
+
+  addProvider(provider: DataProvider<T>): this {
+    this.providers.push(provider);
+    return this;
+  }
+
+  async execute(): Promise<T> {
+    let lastError: Error | null = null;
+
+    for (const provider of this.providers) {
+      try {
+        return await provider.getData();
+      } catch (error) {
+        lastError = error as Error;
+        continue;
+      }
+    }
+
+    throw new Error(`All providers failed. Last error: ${lastError?.message}`);
+  }
+}
+
+// Usage
+class ApiProvider implements DataProvider<string> {
+  async getData(): Promise<string> {
+    return "API data";
+  }
+}
+
+class CacheProvider implements DataProvider<string> {
+  async getData(): Promise<string> {
+    return "Cached data";
+  }
+}
+
+class LocalStorageProvider implements DataProvider<string> {
+  async getData(): Promise<string> {
+    return "Local stoarge saved data";
+  }
+}
+
+class DefaultProvider implements DataProvider<string> {
+  async getData(): Promise<string> {
+    return "Default data";
+  }
+}
+
+const chain = new FallbackChain<string>()
+  .addProvider(new ApiProvider())
+  .addProvider(new CacheProvider())
+  .addProvider(new LocalStorageProvider());
+  .addProvider(new DefaultProvider());
+
+const data = await chain.execute();
+```
+
+This pattern is particularly useful in scenarios where:
+
+- Multiple Data Sources with Different Characteristics: When you have data available from multiple sources with different trade-offs like in the example: Remote API (fresh data) → Cache (slightly stale) → Local Storage (potentially older) → Default (minimal functionality).
+- Progressive Enhancement: When you want to attempt the best possible experience but can gracefully degrade. Each link in the chain represents a less optimal but more reliable fallback.
+- Complex Recovery Strategies: When different recovery strategies might work in different situations. Each provider can implement a different approach to obtaining the data.
+
+## Best Practices
+
+- Type Safety: Leverage TypeScript's type system to ensure fallback values match expected types.
+- Timeout Management: Implement timeouts for fallback operations to prevent hanging.
+- Monitoring: Log fallback occurrences to track system health and identify patterns.
+- Testing: Write comprehensive tests for both primary and fallback paths.
+- Configuration: Make fallback behavior configurable through environment variables or configuration files.
+
+## Conclusion
+
+Implementing robust fallback patterns is crucial for building resilient TypeScript applications. By combining these patterns and following best practices, you can create systems that gracefully handle failures and provide consistent service to your users.
+
+Remember that fallback strategies should be carefully chosen based on your specific use case, performance requirements, and business needs. Regular testing and monitoring of fallback behavior will help ensure your system remains reliable under various failure conditions.
