@@ -2,7 +2,13 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  max-width: 1280px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 0 1rem 2rem;
+  padding: 0 var(--spacing-md) var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--spacing-lg) var(--spacing-xl);
+  }
 }
