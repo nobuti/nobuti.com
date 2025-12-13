@@ -18,11 +18,6 @@ export const Footer = () => {
               Thoughts
             </Link>
           </li>
-          <li>
-            <Link href="/about" className={styles.link}>
-              About me
-            </Link>
-          </li>
         </ul>
       </nav>
       <div className={styles.copy}>©{currentYear} Buti</div>

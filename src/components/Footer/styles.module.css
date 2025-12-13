@@ -2,7 +2,10 @@
   width: 100%;
   display: flex;
   align-items: center;
-  font-size: 0.875rem;
+  padding: var(--spacing-lg) 0;
+  border-top: 1px solid var(--border);
+  margin-top: var(--spacing-xl);
+  font-size: 0.75rem;
 }
 
 .navigation {
@@ -12,20 +15,25 @@
 
 .list {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--spacing-md);
   list-style: none;
 }
 
 .link {
-  color: var(--foreground);
-  font-weight: 700;
+  color: var(--secondary);
+  font-weight: 400;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
 
   &:hover,
   &:focus {
-    color: var(--primary);
+    color: var(--foreground);
+    text-decoration: none;
   }
 }
 
 .copy {
-  margin-right: auto;
+  margin-left: auto;
+  color: var(--secondary);
 }
