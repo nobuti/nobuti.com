@@ -2,8 +2,8 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  padding: 2rem 0;
+  padding: var(--spacing-lg) 0;
+  border-bottom: 1px solid var(--border);
 }
 
 .navigation {
@@ -13,20 +13,20 @@
 
 .list {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--spacing-md);
   list-style: none;
 }
 
 .link {
   color: var(--foreground);
-  font-weight: 700;
+  font-weight: 400;
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s ease;
 
   &:hover,
   &:focus {
-    color: var(--primary);
+    color: var(--accent);
+    text-decoration: none;
   }
-}
-
-.copy {
-  margin-right: auto;
 }

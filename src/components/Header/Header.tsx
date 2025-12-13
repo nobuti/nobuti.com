@@ -16,11 +16,6 @@ export const Header = () => {
               Thoughts
             </Link>
           </li>
-          <li>
-            <Link href="/about" className={styles.link}>
-              About me
-            </Link>
-          </li>
         </ul>
       </nav>
     </header>
