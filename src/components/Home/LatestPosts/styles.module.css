@@ -1,61 +1,62 @@
 .container {
   padding: var(--spacing-xl) 0;
-  border-top: 1px solid var(--border);
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: var(--spacing-md);
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: var(--spacing-lg);
+  color: var(--foreground);
 }
 
 .list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-md);
 }
 
 .post {
-  padding: var(--spacing-sm);
-  border: 1px solid var(--border);
-  border-radius: 0.25rem;
-  transition: border-color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .post:hover {
-  border-color: var(--accent);
+  opacity: 0.7;
 }
 
 .postLink {
   text-decoration: none;
   color: var(--foreground);
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-md);
 }
 
 .postTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: var(--spacing-xs);
+  font-size: 0.875rem;
+  font-weight: 400;
+  flex: 1;
 }
 
 .postDate {
   font-size: 0.75rem;
   color: var(--secondary);
+  white-space: nowrap;
 }
 
 .viewAll {
-  margin-top: var(--spacing-md);
+  margin-top: var(--spacing-lg);
 }
 
 .viewAllLink {
-  color: var(--accent);
+  color: var(--foreground);
   text-decoration: none;
   font-size: 0.875rem;
-  transition: color 0.2s ease;
+  font-weight: 400;
+  transition: opacity 0.2s ease;
 }
 
 .viewAllLink:hover {
-  color: var(--accent-hover);
-  text-decoration: underline;
+  opacity: 0.7;
 }
 

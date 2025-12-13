@@ -1,8 +1,7 @@
 import React from "react";
-import { Meta } from "../components/Meta";
-import { Hero } from "../components/Home/Hero/Hero";
-import { getAllArticles } from "../lib/mdx";
 import { LatestPosts } from "../components/Home/LatestPosts/LatestPosts";
+import { Meta } from "../components/Meta";
+import { getAllArticles } from "../lib/mdx";
 
 export default async function Home() {
   const posts = await getAllArticles();
@@ -10,57 +9,29 @@ export default async function Home() {
   return (
     <>
       <Meta />
-      <Hero />
       
-      <section style={{ padding: 'var(--spacing-xl) 0', borderTop: '1px solid var(--border)' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 'var(--spacing-md)' }}>About</h2>
+      <section style={{ paddingTop: 'var(--spacing-xl)', paddingBottom: 'var(--spacing-xl)' }}>
+        <h1 style={{ fontSize: '1.25rem', fontWeight: 400, marginBottom: 'var(--spacing-xl)', color: 'var(--foreground)' }}>
+          Manu Romero
+        </h1>
+        
         <div style={{ maxWidth: '65ch' }}>
-          <p>
+          <p style={{ marginBottom: 'var(--spacing-md)' }}>
             Father of one and husband, Buti lives in the sunny Málaga, Spain, with his family. 
             He studied Telecommunication Engineering but he soon fell in love with the web.
           </p>
-          <p>
+          <p style={{ marginBottom: 'var(--spacing-md)' }}>
             His career in tech has led him from microwaves and satellite communications to software 
             engineering focused on the web. He has worked in a variety of roles, from backend to frontend, 
             and has a passion for learning and sharing knowledge.
           </p>
-          <p>
+          <p style={{ marginBottom: 0 }}>
             Buti currently works as Software Engineer at <a href="https://eventbrite.com" target="_blank" rel="noopener noreferrer">Eventbrite</a>. 
             Previously he worked at <a href="https://awtomic.com" target="_blank" rel="noopener noreferrer">Awtomic</a>, <a href="https://jobandtalent.com" target="_blank" rel="noopener noreferrer">jobandtalent</a>, <a href="https://zityhub.com" target="_blank" rel="noopener noreferrer">zityhub</a>, <a href="https://carto.com" target="_blank" rel="noopener noreferrer">Carto</a>, <a href="https://audiense.com" target="_blank" rel="noopener noreferrer">Audiense</a>, <a href="https://bebanjo.com" target="_blank" rel="noopener noreferrer">BeBanjo</a>, <a href="http://www.nicemondays.com/" target="_blank" rel="noopener noreferrer">Nicemondays</a>, and Ingenia.
           </p>
         </div>
       </section>
-      
-      <section style={{ padding: 'var(--spacing-xl) 0', borderTop: '1px solid var(--border)' }}>
-        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: 'var(--spacing-md)' }}>Projects</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--spacing-md)' }}>
-          <a href="https://github.com/nobuti/lingoda" target="_blank" rel="noopener noreferrer" style={{ padding: 'var(--spacing-md)', border: '1px solid var(--border)', borderRadius: '0.25rem', textDecoration: 'none', color: 'var(--foreground)' }}>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--spacing-xs)' }}>Lingoda</h3>
-            <p style={{ fontSize: '0.875rem', color: 'var(--secondary)', marginBottom: 0 }}>Uber small i18n library for general purpose</p>
-          </a>
-          
-          <a href="https://github.com/nobuti/retemplate" target="_blank" rel="noopener noreferrer" style={{ padding: 'var(--spacing-md)', border: '1px solid var(--border)', borderRadius: '0.25rem', textDecoration: 'none', color: 'var(--foreground)' }}>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--spacing-xs)' }}>Retemplate</h3>
-            <p style={{ fontSize: '0.875rem', color: 'var(--secondary)', marginBottom: 0 }}>A template utility to build composable strings with jsx elements</p>
-          </a>
-          
-          <a href="https://github.com/nobuti/styled-reset" target="_blank" rel="noopener noreferrer" style={{ padding: 'var(--spacing-md)', border: '1px solid var(--border)', borderRadius: '0.25rem', textDecoration: 'none', color: 'var(--foreground)' }}>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--spacing-xs)' }}>Styled Reset</h3>
-            <p style={{ fontSize: '0.875rem', color: 'var(--secondary)', marginBottom: 0 }}>A modern opinated css reset to use it with styled-components</p>
-          </a>
-          
-          <a href="https://github.com/nobuti/react-plug" target="_blank" rel="noopener noreferrer" style={{ padding: 'var(--spacing-md)', border: '1px solid var(--border)', borderRadius: '0.25rem', textDecoration: 'none', color: 'var(--foreground)' }}>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--spacing-xs)' }}>React Plug</h3>
-            <p style={{ fontSize: '0.875rem', color: 'var(--secondary)', marginBottom: 0 }}>React hooks ready to plug and play. Small utility library implementing react hooks</p>
-          </a>
-          
-          <a href="https://github.com/nobuti/npm-origin" target="_blank" rel="noopener noreferrer" style={{ padding: 'var(--spacing-md)', border: '1px solid var(--border)', borderRadius: '0.25rem', textDecoration: 'none', color: 'var(--foreground)' }}>
-            <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: 'var(--spacing-xs)' }}>NPM Origin</h3>
-            <p style={{ fontSize: '0.875rem', color: 'var(--secondary)', marginBottom: 0 }}>Npm package starter boilerplate. Clone it and focus on your code</p>
-          </a>
-        </div>
-      </section>
-      
+
       <LatestPosts posts={posts} />
     </>
   );

@@ -1,7 +1,6 @@
 import { Analytics } from "@/components/Analytics";
 import { Container } from "@/components/Container/Container";
 import { Footer } from "@/components/Footer/Footer";
-import { Header } from "@/components/Header/Header";
 import { Main } from "@/components/Main/Main";
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
@@ -29,7 +28,6 @@ export default function RootLayout({
       <body className={`antialiased`}>
         <Analytics />
         <Container>
-          <Header />
           <Main>{children}</Main>
           <Footer />
         </Container>
