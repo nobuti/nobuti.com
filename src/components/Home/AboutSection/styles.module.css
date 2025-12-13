@@ -1,0 +1,24 @@
+.container {
+  padding: var(--spacing-xl) 0;
+  border-top: 1px solid var(--border);
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+}
+
+.content {
+  max-width: 65ch;
+}
+
+.content p {
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-base);
+}
+
+.content p:last-child {
+  margin-bottom: 0;
+}
+

@@ -1,0 +1,28 @@
+.container {
+  padding: var(--spacing-xl) 0;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
+  line-height: var(--line-height-tight);
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--secondary);
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 0.875rem;
+  }
+}
+
