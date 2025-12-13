@@ -49,5 +49,8 @@ export async function getAllArticles(): Promise<Article[]> {
     })
   );
 
-  return posts;
+  // Sort by date descending (newest first)
+  return posts.sort((a, b) => {
+    return dayjs(b.date).isAfter(dayjs(a.date)) ? 1 : -1;
+  });
 }
