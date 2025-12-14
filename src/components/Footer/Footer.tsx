@@ -8,16 +8,16 @@ export const Footer = () => {
       <nav className="flex flex-1">
         <ul className="flex gap-md list-none">
           <li>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="text-secondary font-normal text-xs no-underline transition-opacity duration-200 hover:opacity-70 focus:opacity-70"
             >
               Home
             </Link>
           </li>
           <li>
-            <Link 
-              href="/thoughts" 
+            <Link
+              href="/thoughts"
               className="text-secondary font-normal text-xs no-underline transition-opacity duration-200 hover:opacity-70 focus:opacity-70"
             >
               Thoughts
