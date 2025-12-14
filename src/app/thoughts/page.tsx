@@ -1,6 +1,31 @@
 import { getAllArticles } from "@/lib/mdx";
 import dayjs from "dayjs";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+const siteUrl = "https://nobuti.com";
+
+export const metadata: Metadata = {
+  title: "Thoughts",
+  description:
+    "Articles and insights on React, TypeScript, testing, architecture, and modern web development best practices.",
+  alternates: {
+    canonical: `${siteUrl}/thoughts`,
+  },
+  openGraph: {
+    title: "Thoughts | Buti",
+    description:
+      "Articles and insights on React, TypeScript, testing, architecture, and modern web development best practices.",
+    url: `${siteUrl}/thoughts`,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Thoughts | Buti",
+    description:
+      "Articles and insights on React, TypeScript, testing, architecture, and modern web development best practices.",
+  },
+};
 
 export default async function Page() {
   const articles = await getAllArticles();
@@ -28,8 +53,3 @@ export default async function Page() {
     </div>
   );
 }
-
-export const metadata = {
-  title: "Buti | Thoughts",
-  description: "Thoughts",
-};
