@@ -1,6 +1,6 @@
 @tailwind base;
-/* @tailwind components;
-@tailwind utilities; */
+@tailwind components;
+@tailwind utilities;
 
 /* ========================================
    Theme System - Light & Dark Modes
@@ -12,8 +12,8 @@
   --foreground: #1a1a1a;
   --secondary: #6b7280;
   --border: #e5e7eb;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
+  --accent: #a855f7;
+  --accent-hover: #9333ea;
 
   /* Spacing */
   --spacing-xs: 0.5rem;
@@ -35,8 +35,8 @@
     --foreground: #ededed;
     --secondary: #9ca3af;
     --border: #27272a;
-    --accent: #60a5fa;
-    --accent-hover: #3b82f6;
+    --accent: #c084fc;
+    --accent-hover: #d8b4fe;
   }
 }
 

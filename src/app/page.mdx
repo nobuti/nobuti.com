@@ -10,22 +10,30 @@ export default async function Home() {
     <>
       <Meta />
       
-      <section style={{ paddingTop: 'var(--spacing-xl)', paddingBottom: 'var(--spacing-xl)' }}>
-        <h1 style={{ fontSize: '1.25rem', fontWeight: 400, marginBottom: 'var(--spacing-xl)', color: 'var(--foreground)' }}>
-          Manu Romero
+      <section className="py-xl">
+        <h1 className="text-xl font-normal mb-xl text-foreground">
+          Hi, I'm Buti
         </h1>
         
-        <div style={{ maxWidth: '65ch' }}>
-          <p style={{ marginBottom: 'var(--spacing-md)' }}>
+        <div className="max-w-[65ch]">
+          <p className="mb-md">
+            I&apos;m a software engineer with a passion for building elegant, performant web applications. 
+            I specialize in React, TypeScript, and modern frontend architectures.
+          </p>
+          <p className="mb-md">
+            When I&apos;m not coding, you&apos;ll find me speaking at conferences, contributing to open source projects, 
+            or writing about software development practices.
+          </p>
+          <p className="mb-md">
             Father of one and husband, Buti lives in the sunny Málaga, Spain, with his family. 
             He studied Telecommunication Engineering but he soon fell in love with the web.
           </p>
-          <p style={{ marginBottom: 'var(--spacing-md)' }}>
+          <p className="mb-md">
             His career in tech has led him from microwaves and satellite communications to software 
             engineering focused on the web. He has worked in a variety of roles, from backend to frontend, 
             and has a passion for learning and sharing knowledge.
           </p>
-          <p style={{ marginBottom: 0 }}>
+          <p className="mb-0">
             Buti currently works as Software Engineer at <a href="https://eventbrite.com" target="_blank" rel="noopener noreferrer">Eventbrite</a>. 
             Previously he worked at <a href="https://awtomic.com" target="_blank" rel="noopener noreferrer">Awtomic</a>, <a href="https://jobandtalent.com" target="_blank" rel="noopener noreferrer">jobandtalent</a>, <a href="https://zityhub.com" target="_blank" rel="noopener noreferrer">zityhub</a>, <a href="https://carto.com" target="_blank" rel="noopener noreferrer">Carto</a>, <a href="https://audiense.com" target="_blank" rel="noopener noreferrer">Audiense</a>, <a href="https://bebanjo.com" target="_blank" rel="noopener noreferrer">BeBanjo</a>, <a href="http://www.nicemondays.com/" target="_blank" rel="noopener noreferrer">Nicemondays</a>, and Ingenia.
           </p>
@@ -34,5 +42,6 @@ export default async function Home() {
 
       <LatestPosts posts={posts} />
     </>
-  );
+
+);
 }

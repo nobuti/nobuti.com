@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { Article } from "@/types";
 import dayjs from "dayjs";
-import styles from "./styles.module.css";
+import Link from "next/link";
 
 interface LatestPostsProps {
   posts: Article[];
@@ -11,26 +10,34 @@ export const LatestPosts = ({ posts }: LatestPostsProps) => {
   const latestPosts = posts.slice(0, 5);
 
   return (
-    <section className={styles.container}>
-      <h2 className={styles.title}>Writing</h2>
-      <div className={styles.list}>
+    <section className="py-xl">
+      <h2 className="text-base font-normal mb-lg text-foreground">Writing</h2>
+      <div className="flex flex-col gap-md">
         {latestPosts.map((post) => (
-          <article key={post.slug} className={styles.post}>
-            <Link href={`/thoughts/${post.slug}`} className={styles.postLink}>
-              <div className={styles.postTitle}>{post.title}</div>
-              <time className={styles.postDate}>
+          <article 
+            key={post.slug} 
+            className="transition-opacity duration-200 hover:opacity-70"
+          >
+            <Link 
+              href={`/thoughts/${post.slug}`} 
+              className="no-underline text-foreground flex justify-between items-baseline gap-md"
+            >
+              <div className="text-sm font-normal flex-1">{post.title}</div>
+              <time className="text-xs text-secondary whitespace-nowrap">
                 {dayjs(post.date).format("MMM D, YYYY")}
               </time>
             </Link>
           </article>
         ))}
       </div>
-      <div className={styles.viewAll}>
-        <Link href="/thoughts" className={styles.viewAllLink}>
+      <div className="mt-lg">
+        <Link 
+          href="/thoughts" 
+          className="text-foreground no-underline text-sm font-normal transition-opacity duration-200 hover:opacity-70"
+        >
           View all
         </Link>
       </div>
     </section>
   );
 };
-
